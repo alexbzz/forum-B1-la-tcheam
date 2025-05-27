@@ -28,6 +28,14 @@ func main() {
 	http.HandleFunc("/register", Handler.RegisterHandler)
 	http.HandleFunc("/", Handler.ServeRegisterPage)
 
+	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
+			Handler.LoginHandler(w, r)
+		} else {
+			Handler.ServeLoginPage(w, r)
+		}
+	})
+
 	fmt.Println("Serveur lancé sur : http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
