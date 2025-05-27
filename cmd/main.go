@@ -23,6 +23,8 @@ func main() {
 		log.Fatal("Erreur ping DB :", err)
 	}
 
+	Handler.InitDB(db)
+
 	http.HandleFunc("/register", Handler.RegisterHandler)
 	http.HandleFunc("/", Handler.ServeRegisterPage)
 

@@ -54,9 +54,18 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 
 	_, err = db.Exec("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)", username, email, hash)
 	if err != nil {
+		fmt.Println("Erreur lors de l'insertion en base:", err)
+		if err.Error() != "" && (contains(err.Error(), "Duplicate") || contains(err.Error(), "unique")) {
+			http.Error(w, "Cet utilisateur ou cet email existe déjà", http.StatusConflict)
+			return
+		}
 		http.Error(w, "Erreur d'insertion en base", http.StatusInternalServerError)
 		return
 	}
 
 	fmt.Fprintln(w, "Inscription réussie 🎉")
+}
+
+func contains(s, substr string) bool {
+	return s != "" && (len(s) >= len(substr)) && (s[:len(substr)] == substr || s[len(s)-len(substr):] == substr || s[1:len(s)-1] != "" && contains(s[1:len(s)-1], substr))
 }
