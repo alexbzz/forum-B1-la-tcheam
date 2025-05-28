@@ -36,6 +36,8 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/index", Handler.ServeIndexPage)
+
 	fmt.Println("Serveur lancé sur : http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

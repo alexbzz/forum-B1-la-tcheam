@@ -64,5 +64,5 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	// Authentification réussie
 	// Vous pourriez implémenter une gestion de session ici
 	fmt.Println("Connexion réussie pour", username)
-	fmt.Fprintf(w, "Connexion réussie ! Bienvenue, %s", username)
+	http.Redirect(w, r, "/index", http.StatusSeeOther)
 }

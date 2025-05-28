@@ -20,9 +20,6 @@ func ServeRegisterPage(w http.ResponseWriter, r *http.Request) {
 	// Remplacez par le chemin réel où se trouve votre dossier templates
 	templatePath := filepath.Join("C:\\Users\\raphy\\GolandProjects\\forum-B1-la-tcheam\\templates", "register.html")
 
-	// Ajoutez cette ligne pour déboguer
-	fmt.Println("Tentative de charger le template:", templatePath)
-
 	tmpl, err := template.ParseFiles(templatePath)
 	if err != nil {
 		http.Error(w, "Erreur de template: "+err.Error(), http.StatusInternalServerError)
@@ -63,7 +60,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintln(w, "Inscription réussie 🎉")
+	http.Redirect(w, r, "/index", http.StatusSeeOther)
 }
 
 func contains(s, substr string) bool {
