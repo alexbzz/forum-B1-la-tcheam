@@ -8,31 +8,23 @@
 </head>
 
 <body>
-    <h1>Inscription</h1>
-
-    <form action="/register" method="POST">
-        <div>
-            <label for="username">Nom d'utilisateur:</label>
-            <input type="text" id="username" name="username" required>
-        </div>
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div>
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">S'inscrire</button>
-    </form>
-
-    <p style="text-align: center; margin-top: 20px;">Ou</p>
-
-    <div style="text-align: center; margin-top: 10px;">
-        <a href="/auth/google" class="google-btn">Se connecter avec Google</a>
+<h1>Inscription</h1>
+<form action="/register" method="POST">
+    <div>
+        <label for="username">UserName:</label>
+        <input type="text" id="username" name="username" required>
     </div>
-
-    <p>already account ? <a href="/templates/login.html">Login</a></p>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+        <label for="password">PassWord:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <button type="submit">Register</button>
+</form>
+<p>Already an account ?  <a href="login.html">Login</a></p>
 </body>
 
 </html>
