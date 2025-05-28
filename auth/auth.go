@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"net/http"
+	"os"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -13,15 +14,15 @@ import (
 )
 
 // https://console.cloud.google.com/auth/overview for connect ID User
-var googleOAuthConfig = &oauth2.Config{
-	ClientID:     "",
-	ClientSecret: "",
-	RedirectURL:  "http://localhost:8080/auth/google/callback",
-	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
-	Endpoint:     google.Endpoint,
-}
 
 func GoogleLogin(w http.ResponseWriter, r *http.Request) {
+	var googleOAuthConfig = &oauth2.Config{
+		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
+		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
+		RedirectURL:  "http://localhost:8080/auth/google/callback",
+		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
+		Endpoint:     google.Endpoint,
+	}
 	url := googleOAuthConfig.AuthCodeURL("random-state")
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
@@ -32,7 +33,13 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Code not found", http.StatusBadRequest)
 		return
 	}
-
+	var googleOAuthConfig = &oauth2.Config{
+		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
+		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
+		RedirectURL:  "http://localhost:8080/auth/google/callback",
+		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
+		Endpoint:     google.Endpoint,
+	}
 	token, err := googleOAuthConfig.Exchange(context.Background(), code)
 	if err != nil {
 		http.Error(w, "Token exchange failed: "+err.Error(), http.StatusInternalServerError)

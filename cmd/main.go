@@ -8,6 +8,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/joho/godotenv"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -23,10 +25,11 @@ func main() {
 	if err := db.Ping(); err != nil {
 		log.Fatal("Erreur ping DB :", err)
 	}
+	godotenv.Load(".env")
 
 	Handler.InitDB(db)
 
-	staticDir := "C:\\Users\\raphy\\GolandProjects\\forum-B1-la-tcheam\\static"
+	staticDir := "./static"
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir))))
 
 	// Pages Register Login
@@ -44,7 +47,7 @@ func main() {
 	// Page d'accueil
 	http.HandleFunc("/", Handler.ServeIndexPage)
 
-	//  Routes Google Auth
+	// Google Auth
 	http.HandleFunc("/auth/google", auth.GoogleLogin)
 	http.HandleFunc("/auth/google/callback", auth.GoogleCallback)
 
@@ -53,3 +56,5 @@ func main() {
 	fmt.Println("Serveur lancé sur : http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
+
+//Load the .env file in the current directory
