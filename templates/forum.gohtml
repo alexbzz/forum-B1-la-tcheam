@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forums | La Tcheam</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+
+<body>
+    <header>
+        <h1>Forums de La Tcheam</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/forum">Forums</a></li>
+                {{if .LoggedIn}}
+                    <li class="user-info">Connecté en tant que {{.Username}}</li>
+                {{else}}
+                    <li><a href="/login">Connexion</a></li>
+                    <li><a href="/register">Inscription</a></li>
+                {{end}}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="forum-container">
+            <h2>Catégories de discussion</h2>
+
+            {{if .LoggedIn}}
+                <div class="admin-actions">
+                    <a href="/new-category" class="btn">Créer une nouvelle catégorie</a>
+                </div>
+            {{end}}
+
+            <div class="categories-list">
+                {{range .Categories}}
+                <div class="category-item">
+                    <h3><a href="/category?id={{.ID}}">{{.Name}}</a></h3>
+                    <p>{{.Description}}</p>
+                </div>
+                {{else}}
+                <p>Aucune catégorie n'est disponible pour le moment.</p>
+                {{end}}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 La Tcheam. Tous droits réservés.</p>
+    </footer>
+</body>
+
+</html>
