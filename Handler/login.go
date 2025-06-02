@@ -10,7 +10,7 @@ import (
 
 // ServeLoginPage affiche la page de connexion
 func ServeLoginPage(w http.ResponseWriter, r *http.Request) {
-	templatePath := filepath.Join("C:\\Users\\raphy\\GolandProjects\\forum-B1-la-tcheam\\templates", "login.html")
+	templatePath := filepath.Join("C:\\Users\\alexb\\Documents\\B1forum\\templates", "login.html")
 	fmt.Println("Tentative de charger le template:", templatePath)
 
 	tmpl, err := template.ParseFiles(templatePath)
@@ -62,7 +62,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Authentification réussie
-	// Vous pourriez implémenter une gestion de session ici
 	fmt.Println("Connexion réussie pour", username)
 	http.Redirect(w, r, "/index", http.StatusSeeOther)
 

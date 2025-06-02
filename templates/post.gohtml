@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Créer un post | Forum La Tcheam</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Create post</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </nav>
+        <div class="user-info">
+            {{ if .Username }}
+                Bienvenue, {{ .Username }}
+            {{ else }}
+                <a href="/login">Connexion requise</a>
+            {{ end }}
+        </div>
+    </header>
+
+    <main>
+        {{ if .Username }}
+            <div class="post-form">
+                <form action="/create-post" method="POST">
+                    <div class="form-group">
+                        <label for="title">Titre du post :</label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Catégorie :</label>
+                        <select id="category" name="category" required>
+                            <option value="general">Général</option>
+                            <option value="question">Query</option>
+                            <option value="discussion">Discussion</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content">Content :</label>
+                        <textarea id="content" name="content" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn">Publish</button>
+                </form>
+            </div>
+        {{ else }}
+            <p class="message">You ne</p>
+        {{ end }}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 La Tcheam. All rights reserved.</p>
+    </footer>
+</body>
+</html>
