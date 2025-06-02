@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 )
 
-// ServeLoginPage affiche la page de connexion
 func ServeLoginPage(w http.ResponseWriter, r *http.Request) {
 	templatePath := filepath.Join("C:\\Users\\alexb\\Documents\\B1forum\\templates", "login.html")
 	fmt.Println("Tentative de charger le template:", templatePath)
