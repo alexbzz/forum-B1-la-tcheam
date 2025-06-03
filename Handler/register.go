@@ -19,7 +19,11 @@ func InitDB(database *sql.DB) {
 func ServeRegisterPage(w http.ResponseWriter, r *http.Request) {
 	// Chemin direct vers votre dossier templates
 	// Remplacez par le chemin réel où se trouve votre dossier templates
+<<<<<<< HEAD
 	templatePath := filepath.Join("./templates", "register.html")
+=======
+	templatePath := filepath.Join("../templates/", "register.html")
+>>>>>>> 7feb3b0 (feat(google auth))
 
 	tmpl, err := template.ParseFiles(templatePath)
 	if err != nil {

@@ -23,6 +23,11 @@ func ServeIndexPage(w http.ResponseWriter, r *http.Request) {
 
 	data := IndexPageData{Username: username}
 
+<<<<<<< HEAD
+=======
+	templatePath := filepath.Join("../templates/", "index.gohtml")
+
+>>>>>>> 7feb3b0 (feat(google auth))
 	tmpl, err := template.ParseFiles(templatePath)
 	if err != nil {
 		http.Error(w, "Erreur de template: "+err.Error(), http.StatusInternalServerError)

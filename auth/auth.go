@@ -5,7 +5,10 @@ import (
 	"database/sql"
 	"encoding/json"
 	"net/http"
+<<<<<<< HEAD
 	"os"
+=======
+>>>>>>> 7feb3b0 (feat(google auth))
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -14,6 +17,7 @@ import (
 )
 
 // https://console.cloud.google.com/auth/overview for connect ID User
+<<<<<<< HEAD
 
 func GoogleLogin(w http.ResponseWriter, r *http.Request) {
 	var googleOAuthConfig = &oauth2.Config{
@@ -23,6 +27,17 @@ func GoogleLogin(w http.ResponseWriter, r *http.Request) {
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
 		Endpoint:     google.Endpoint,
 	}
+=======
+var googleOAuthConfig = &oauth2.Config{
+	ClientID:     "275313117062-i0lb0eeq6lb5dhu5a0ieqvk0dokbe8h0.apps.googleusercontent.com",
+	ClientSecret: "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",
+	RedirectURL:  "http://localhost:8080/auth/google/callback",
+	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
+	Endpoint:     google.Endpoint,
+}
+
+func GoogleLogin(w http.ResponseWriter, r *http.Request) {
+>>>>>>> 7feb3b0 (feat(google auth))
 	url := googleOAuthConfig.AuthCodeURL("random-state")
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
@@ -33,6 +48,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Code not found", http.StatusBadRequest)
 		return
 	}
+<<<<<<< HEAD
 	var googleOAuthConfig = &oauth2.Config{
 		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
@@ -40,6 +56,9 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
 		Endpoint:     google.Endpoint,
 	}
+=======
+
+>>>>>>> 7feb3b0 (feat(google auth))
 	token, err := googleOAuthConfig.Exchange(context.Background(), code)
 	if err != nil {
 		http.Error(w, "Token exchange failed: "+err.Error(), http.StatusInternalServerError)

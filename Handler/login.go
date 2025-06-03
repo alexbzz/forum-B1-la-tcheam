@@ -10,7 +10,11 @@ import (
 )
 
 func ServeLoginPage(w http.ResponseWriter, r *http.Request) {
+<<<<<<< HEAD
 	templatePath := filepath.Join("./templates/login.html")
+=======
+	templatePath := filepath.Join("../templates/", "login.html")
+>>>>>>> 7feb3b0 (feat(google auth))
 	fmt.Println("Tentative de charger le template:", templatePath)
 
 	tmpl, err := template.ParseFiles(templatePath)

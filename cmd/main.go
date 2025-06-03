@@ -29,7 +29,11 @@ func main() {
 
 	Handler.InitDB(db)
 
+<<<<<<< HEAD
 	staticDir := "./static"
+=======
+	staticDir := "C:\\Users\\Dell-Precision\\Desktop\\Forum\\static"
+>>>>>>> 7feb3b0 (feat(google auth))
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir))))
 
 	// Pages Register Login
@@ -47,12 +51,19 @@ func main() {
 	// Page d'accueil
 	http.HandleFunc("/", Handler.ServeIndexPage)
 
+<<<<<<< HEAD
 	// Google Auth
 	http.HandleFunc("/auth/google", auth.GoogleLogin)
 	http.HandleFunc("/auth/google/callback", auth.GoogleCallback)
 
 	http.HandleFunc("/index", Handler.ServeIndexPage)
 
+=======
+	//  Routes Google Auth
+	http.HandleFunc("/auth/google", auth.GoogleLogin)
+	http.HandleFunc("/auth/google/callback", auth.GoogleCallback)
+
+>>>>>>> 7feb3b0 (feat(google auth))
 	fmt.Println("Serveur lancé sur : http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
