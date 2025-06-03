@@ -26,7 +26,7 @@ func main() {
 
 	Handler.InitDB(db)
 
-	staticDir := "C:\\Users\\Dell-Precision\\Desktop\\Forum\\static"
+	staticDir := "C:\\Users\\raphy\\GolandProjects\\forum-B1-la-tcheam\\static"
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir))))
 
 	// Pages Register Login

@@ -9,7 +9,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// ServeLoginPage affiche la page de connexion
 func ServeLoginPage(w http.ResponseWriter, r *http.Request) {
 	templatePath := filepath.Join("../templates/", "login.html")
 	fmt.Println("Tentative de charger le template:", templatePath)
@@ -63,18 +62,16 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Authentification réussie
-	// Vous pourriez implémenter une gestion de session ici
 	fmt.Println("Connexion réussie pour", username)
-	http.Redirect(w, r, "/index", http.StatusSeeOther)
 
 	cookie := http.Cookie{
 		Name:     "username",
 		Value:    username,
 		Path:     "/",
-		MaxAge:   3600, // 1 heure
+		MaxAge:   3600,
 		HttpOnly: true,
 	}
 
 	http.SetCookie(w, &cookie)
-	http.Redirect(w, r, "/index", http.StatusSeeOther)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
