@@ -20,7 +20,7 @@ func ServeIndexPage(w http.ResponseWriter, r *http.Request) {
 
 	data := IndexPageData{Username: username}
 
-	templatePath := filepath.Join("C:\\Users\\raphy\\GolandProjects\\forum-B1-la-tcheam\\templates", "index.gohtml")
+	templatePath := filepath.Join("../templates/", "index.gohtml")
 
 	tmpl, err := template.ParseFiles(templatePath)
 	if err != nil {

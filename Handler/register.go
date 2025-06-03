@@ -3,10 +3,11 @@ package Handler
 import (
 	"database/sql"
 	"fmt"
-	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
 	"path/filepath"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 var db *sql.DB
