@@ -14,7 +14,7 @@ var db *sql.DB
 
 func main() {
 	var err error
-	dsn := "root:Hayabusa95@tcp(127.0.0.1:3306)/forum"
+	dsn := "root:Youyou3000.@tcp(127.0.0.1:3306)/forum"
 	db, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal("Erreur de connexion à la base :", err)
@@ -25,11 +25,11 @@ func main() {
 
 	Handler.InitDB(db)
 
-	staticDir := "C:\\Users\\alexb\\Documents\\B1forum\\static"
+	staticDir := "./forum-B1-la-tcheam/static"
+
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir))))
 	http.HandleFunc("/register", Handler.RegisterHandler)
 	http.HandleFunc("/registe", Handler.ServeRegisterPage)
-
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
 			Handler.LoginHandler(w, r)
@@ -37,9 +37,7 @@ func main() {
 			Handler.ServeLoginPage(w, r)
 		}
 	})
-
 	http.HandleFunc("/", Handler.ServeIndexPage)
-
 	fmt.Println("Serveur lancé sur : http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

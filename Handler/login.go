@@ -5,11 +5,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
-	"path/filepath"
 )
 
 func ServeLoginPage(w http.ResponseWriter, r *http.Request) {
-	templatePath := filepath.Join("C:\\Users\\alexb\\Documents\\B1forum\\templates", "login.html")
+	templatePath := "./forum-B1-la-tcheam/templates/login.html"
 	fmt.Println("Tentative de charger le template:", templatePath)
 
 	tmpl, err := template.ParseFiles(templatePath)
@@ -62,16 +61,15 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Authentification réussie
 	fmt.Println("Connexion réussie pour", username)
-	http.Redirect(w, r, "/index", http.StatusSeeOther)
 
 	cookie := http.Cookie{
 		Name:     "username",
 		Value:    username,
 		Path:     "/",
-		MaxAge:   3600, // 1 heure
+		MaxAge:   3600,
 		HttpOnly: true,
 	}
 
 	http.SetCookie(w, &cookie)
-	http.Redirect(w, r, "/index", http.StatusSeeOther)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

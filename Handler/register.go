@@ -6,7 +6,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
-	"path/filepath"
 )
 
 var db *sql.DB
@@ -16,9 +15,8 @@ func InitDB(database *sql.DB) {
 }
 
 func ServeRegisterPage(w http.ResponseWriter, r *http.Request) {
-	// Chemin direct vers votre dossier templates
-	// Remplacez par le chemin réel où se trouve votre dossier templates
-	templatePath := filepath.Join("C:\\Users\\alexb\\Documents\\B1forum\\templates", "register.html")
+
+	templatePath := "./forum-B1-la-tcheam/templates/register.html"
 
 	tmpl, err := template.ParseFiles(templatePath)
 	if err != nil {
