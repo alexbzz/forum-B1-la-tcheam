@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"forum/Handler"
+	"forum/auth"
 	"log"
 	"net/http"
 
@@ -14,7 +15,7 @@ var db *sql.DB
 
 func main() {
 	var err error
-	dsn := "root:Youyou3000.@tcp(127.0.0.1:3306)/forum"
+	dsn := "root:1234@tcp(127.0.0.1:3306)/forum"
 	db, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal("Erreur de connexion à la base :", err)
@@ -25,8 +26,10 @@ func main() {
 
 	Handler.InitDB(db)
 
-	staticDir := "C:\\Users\\raphy\\GolandProjects\\forum-B1-la-tcheam\\static"
+	staticDir := "C:\\Users\\Dell-Precision\\Desktop\\Forum\\static"
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir))))
+
+	// Pages Register Login
 	http.HandleFunc("/register", Handler.RegisterHandler)
 	http.HandleFunc("/registe", Handler.ServeRegisterPage)
 
@@ -38,7 +41,12 @@ func main() {
 		}
 	})
 
+	// Page d'accueil
 	http.HandleFunc("/", Handler.ServeIndexPage)
+
+	//  Routes Google Auth
+	http.HandleFunc("/auth/google", auth.GoogleLogin)
+	http.HandleFunc("/auth/google/callback", auth.GoogleCallback)
 
 	fmt.Println("Serveur lancé sur : http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
