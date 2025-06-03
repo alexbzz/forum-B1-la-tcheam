@@ -5,10 +5,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Accueil | Forum La Tcheam</title>
+<<<<<<< HEAD
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+=======
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
+>>>>>>> d960553 (feat(go,html): bug with cookie)
 </head>
 
-
+<body>
 
     <header>
         <h1>Bienvenue sur le Forum de la Tcheam</h1>
@@ -19,22 +23,12 @@
                 <li><a href="/registe">Register</a></li>
             </ul>
         </nav>
-        <div class="User-info">
+        <div class="user-info">
             {{ if .Username }}
                 <span>Bonjour, {{ .Username }}</span>
             {{ end }}
         </div>
     </header>
-
-<body>
-
-<div class="user-info">
-    {{ if .Username }}
-        Bienvenue, {{ .Username }}
-    {{ else }}
-        <a href="/login">Connexion</a>
-    {{ end }}
-</div>
 
     <main>
         <section class="intro">
