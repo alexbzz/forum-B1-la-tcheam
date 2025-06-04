@@ -8,7 +8,6 @@ RUN go mod download
 
 COPY . .
 
-# Compilation statique (pour éviter les problèmes liés à GLIBC dans Debian slim)
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o forum ./cmd
 
 # Étape 2 : image minimale

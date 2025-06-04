@@ -2,13 +2,9 @@ services:
   db:
     image: mysql:8.0
     restart: always
-    ports:
-      - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: Youyou3000.  # 👈 Obligatoire
+      MYSQL_ROOT_PASSWORD: Alexandre08
       MYSQL_DATABASE: forum
-      MYSQL_USER: root                  # 👈 Ce n’est pas utile si tu veux utiliser root directement
-      MYSQL_PASSWORD: Youyou3000.       # 👈 Optionnel ici, car root est déjà défini
 
   forum:
     build: .
@@ -19,5 +15,5 @@ services:
     environment:
       DB_HOST: db
       DB_PORT: 3306
-      DB_PASSWORD: Youyou3000.
+      DB_PASSWORD: Alexandre08
       DB_NAME: forum

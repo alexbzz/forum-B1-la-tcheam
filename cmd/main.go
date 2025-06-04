@@ -6,6 +6,7 @@ import (
 	"forum/Handler"
 	"log"
 	"net/http"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -14,13 +15,22 @@ var db *sql.DB
 
 func main() {
 	var err error
-	dsn := "root:Hayabusa95@tcp(127.0.0.1:3306)/forum"
-	db, err = sql.Open("mysql", dsn)
-	if err != nil {
-		log.Fatal("Erreur de connexion à la base :", err)
+	dsn := "root:Alexandre08@tcp(db:3306)/forum"
+
+	// Retry de connexion à la DB
+	for i := 0; i < 10; i++ {
+		db, err = sql.Open("mysql", dsn)
+		if err == nil {
+			err = db.Ping()
+			if err == nil {
+				break
+			}
+		}
+		log.Printf("Tentative %d: DB non prête, nouvel essai dans 3s...", i+1)
+		time.Sleep(3 * time.Second)
 	}
-	if err := db.Ping(); err != nil {
-		log.Fatal("Erreur ping DB :", err)
+	if err != nil {
+		log.Fatal("Impossible de se connecter à la base après plusieurs tentatives :", err)
 	}
 
 	Handler.InitDB(db)
