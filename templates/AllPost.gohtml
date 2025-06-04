@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tous les posts | Forum La Tcheam</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Forum La Tcheam</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/posts" class="active">Tous les posts</a></li>
+                <li><a href="/post">Créer un post</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/registe">Register</a></li>
+            </ul>
+        </nav>
+        <div class="user-info">
+            {{ if .Username }}
+                Bienvenue, {{ .Username }}
+            {{ end }}
+        </div>
+    </header>
+
+    <main>
+        <section class="posts-container">
+            <h2>Tous les posts</h2>
+
+            {{ if .Username }}
+            <div class="create-post-btn">
+                <a href="/post" class="btn">Créer un nouveau post</a>
+            </div>
+            {{ end }}
+
+            {{ if .Posts }}
+                {{ range .Posts }}
+                <article class="post-card">
+                    <h3 class="post-title">{{ .Title }}</h3>
+                    <div class="post-meta">
+                        <span class="post-author">Par: {{ .Author }}</span>
+                        <span class="post-date">Le: {{ .CreatedAt.Format "02/01/2006 à 15:04" }}</span>
+                    </div>
+                    <div class="post-content">{{ .Content }}</div>
+                </article>
+                {{ end }}
+            {{ else }}
+                <p class="no-posts">Aucun post disponible pour le moment.</p>
+            {{ end }}
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 La Tcheam. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>

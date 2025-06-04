@@ -37,6 +37,10 @@ func main() {
 			Handler.ServeLoginPage(w, r)
 		}
 	})
+
+	http.HandleFunc("/AllPost", Handler.ListAllPostsHandler)
+	http.HandleFunc("/posts", Handler.ServePostPage)
+	http.HandleFunc("/create-post", Handler.CreatePostHandler)
 	http.HandleFunc("/", Handler.ServeIndexPage)
 	fmt.Println("Serveur lancé sur : http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
