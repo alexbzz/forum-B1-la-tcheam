@@ -81,6 +81,5 @@ func ServePostPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Rediriger vers la page d'accueil après création
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
