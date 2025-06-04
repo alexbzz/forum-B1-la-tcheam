@@ -7,55 +7,56 @@
 </head>
 <body>
     <header>
-        <h1>Create post</h1>
+        <h1>Création d'un nouveau post</h1>
         <nav>
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/login">Login</a></li>
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/AllPost">Forum</a></li>
+                {{ if .Username }}
+                    <li><a href="/logout">Déconnexion</a></li>
+                {{ else }}
+                    <li><a href="/login">Connexion</a></li>
+                    <li><a href="/registe">Inscription</a></li>
+                {{ end }}
             </ul>
         </nav>
         <div class="user-info">
             {{ if .Username }}
-                Bienvenue, {{ .Username }}
-            {{ else }}
-                <a href="/login">Connexion requise</a>
+                <span>Bonjour, {{ .Username }}</span>
             {{ end }}
         </div>
     </header>
 
     <main>
         {{ if .Username }}
+            {{ if .Error }}
+                <div class="error-message">
+                    <p>{{ .Error }}</p>
+                </div>
+            {{ end }}
+
             <div class="post-form">
-                <form action="/create-post" method="POST">
+                <form action="/posts" method="POST">
                     <div class="form-group">
                         <label for="title">Titre du post :</label>
                         <input type="text" id="title" name="title" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="category">Catégorie :</label>
-                        <select id="category" name="category" required>
-                            <option value="general">Général</option>
-                            <option value="question">Query</option>
-                            <option value="discussion">Discussion</option>
-                        </select>
+                        <label for="content">Contenu :</label>
+                        <textarea id="content" name="content" rows="10" required></textarea>
                     </div>
 
-                    <div class="form-group">
-                        <label for="content">Content :</label>
-                        <textarea id="content" name="content" required></textarea>
-                    </div>
-
-                    <button type="submit" class="btn">Publish</button>
+                    <button type="submit" class="btn">Publier</button>
                 </form>
             </div>
         {{ else }}
-            <p class="message">You ne</p>
+            <p class="message">Vous devez être connecté pour créer un post. <a href="/login">Se connecter</a></p>
         {{ end }}
     </main>
 
     <footer>
-        <p>&copy; 2025 La Tcheam. All rights reserved.</p>
+        <p>&copy; 2025 La Tcheam. Tous droits réservés.</p>
     </footer>
 </body>
 </html>
