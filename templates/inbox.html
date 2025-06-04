@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Boîte de réception de {{.Username}}</title>
+</head>
+<body>
+
+<h1>Messages privés reçus</h1>
+
+{{if .Messages}}
+{{range .Messages}}
+<div>
+  <div>
+    De : <strong>{{.Sender}}</strong> | Envoyé le {{.SentAt.Format "02/01/2006 15:04"}}
+  </div>
+  <p>{{.Content}}</p>
+</div>
+{{end}}
+{{else}}
+<p>Aucun message privé pour l’instant.</p>
+{{end}}
+
+</body>
+</html>
