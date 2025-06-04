@@ -9,8 +9,6 @@ import (
 	"path/filepath"
 )
 
-var db *sql.DB
-
 func InitDB(database *sql.DB) {
 	db = database
 }

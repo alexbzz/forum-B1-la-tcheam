@@ -1,10 +1,26 @@
 package Handler
 
 import (
+	"database/sql"
 	"html/template"
 	"net/http"
 	"time"
+
+	"github.com/gorilla/sessions"
 )
+
+var (
+	store *sessions.CookieStore
+	db    *sql.DB
+)
+
+func SetStore(s *sessions.CookieStore) {
+	store = s
+}
+
+func SetDB(database *sql.DB) {
+	db = database
+}
 
 func ServePostPage(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "session-name")
@@ -16,7 +32,11 @@ func ServePostPage(w http.ResponseWriter, r *http.Request) {
 		Username: username,
 	}
 
-	tmpl, _ := template.ParseFiles("templates/post.gohtml")
+	tmpl, err := template.ParseFiles("templates/post.gohtml")
+	if err != nil {
+		http.Error(w, "Erreur de template", http.StatusInternalServerError)
+		return
+	}
 	tmpl.Execute(w, data)
 }
 

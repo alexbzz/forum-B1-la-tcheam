@@ -3,7 +3,7 @@ package Handler
 import (
 	"html/template"
 	"net/http"
-	"path/filepath"
+	_ "path/filepath"
 )
 
 type IndexPageData struct {
@@ -20,7 +20,7 @@ func ServeIndexPage(w http.ResponseWriter, r *http.Request) {
 
 	data := IndexPageData{Username: username}
 
-	templatePath := filepath.Join("C:\\Users\\alexb\\Documents\\B1forum\\templates", "index.gohtml")
+	templatePath := "../templates/index.gohtml"
 
 	tmpl, err := template.ParseFiles(templatePath)
 	if err != nil {
