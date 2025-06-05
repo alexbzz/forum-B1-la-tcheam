@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"time"
 )
 
 type PostPageData struct {
@@ -13,11 +12,10 @@ type PostPageData struct {
 }
 
 type Post struct {
-	ID        int
-	UserID    int
-	Title     string
-	Content   string
-	CreatedAt time.Time
+	ID      int
+	UserID  int
+	Title   string
+	Content string
 }
 
 func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
@@ -43,6 +41,12 @@ func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func ServePostPage(w http.ResponseWriter, r *http.Request) {
+	if db == nil {
+		fmt.Println("ERREUR CRITIQUE: La connexion à la base de données est nil")
+		http.Error(w, "Erreur de connexion à la base de données", http.StatusInternalServerError)
+		return
+	}
+
 	if r.Method != http.MethodPost {
 		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
 		return
@@ -50,11 +54,37 @@ func ServePostPage(w http.ResponseWriter, r *http.Request) {
 
 	cookie, err := r.Cookie("username")
 	if err != nil {
+		fmt.Println("Utilisateur non connecté:", err)
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
 	username := cookie.Value
+	fmt.Println("Utilisateur connecté:", username)
 
+	// Récupération des données du formulaire
+	title := r.FormValue("title")
+	content := r.FormValue("content")
+	fmt.Println("Données du formulaire - Titre:", title)
+	fmt.Println("Données du formulaire - Contenu:", content)
+
+	// Validation des champs
+	if title == "" || content == "" {
+		fmt.Println("Validation échouée: champs vides")
+		http.Error(w, "Tous les champs sont obligatoires", http.StatusBadRequest)
+		return
+	}
+
+	// Test de la connexion à la base de données
+	var testResult int
+	err = db.QueryRow("SELECT 1").Scan(&testResult)
+	if err != nil {
+		fmt.Println("Test de connexion échoué:", err)
+		http.Error(w, "La base de données n'est pas accessible", http.StatusInternalServerError)
+		return
+	}
+	fmt.Println("Test de connexion réussi:", testResult)
+
+	// Récupération de l'ID utilisateur
 	var userID int
 	err = db.QueryRow("SELECT id FROM users WHERE username = ?", username).Scan(&userID)
 	if err != nil {
@@ -62,24 +92,29 @@ func ServePostPage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Utilisateur non trouvé", http.StatusInternalServerError)
 		return
 	}
+	fmt.Println("ID utilisateur récupéré:", userID)
 
-	title := r.FormValue("title")
-	content := r.FormValue("content")
-
-	if title == "" || content == "" {
-		http.Error(w, "Tous les champs sont obligatoires", http.StatusBadRequest)
-		return
-	}
-
-	_, err = db.Exec(
-		"INSERT INTO posts (user_id, title, content, created_at) VALUES (?, ?, ?, ?)",
-		userID, title, content, time.Now())
+	// Insertion sans spécifier created_at (utilisation de la valeur par défaut)
+	result, err := db.Exec(
+		"INSERT INTO posts (user_id, title, content) VALUES (?, ?, ?)",
+		userID, title, content)
 
 	if err != nil {
-		fmt.Println("Erreur lors de la création du post:", err)
+		fmt.Println("Erreur SQL lors de la création du post:", err)
 		http.Error(w, "Erreur lors de la création du post", http.StatusInternalServerError)
 		return
 	}
 
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	// Vérification que l'insertion a bien fonctionné
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		fmt.Println("Erreur lors de la vérification des lignes affectées:", err)
+	} else if rowsAffected == 0 {
+		fmt.Println("Attention: Aucune ligne n'a été insérée")
+	} else {
+		fmt.Println("Post créé avec succès! Lignes affectées:", rowsAffected)
+	}
+
+	// Redirection vers la page des posts
+	http.Redirect(w, r, "/AllPost", http.StatusSeeOther)
 }
