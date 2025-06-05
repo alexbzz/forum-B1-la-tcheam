@@ -14,8 +14,8 @@ import (
 
 // https://console.cloud.google.com/auth/overview for connect ID User
 var googleOAuthConfig = &oauth2.Config{
-	ClientID:     "GOOGLE_CLIENT_ID",
-	ClientSecret: "GOOGLE_CLIENT_SECRET",
+	ClientID:     "",
+	ClientSecret: "",
 	RedirectURL:  "http://localhost:8080/auth/google/callback",
 	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
 	Endpoint:     google.Endpoint,
