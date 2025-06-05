@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mon compte</title>
+    <link rel="stylesheet" href="/static/css/account.css">
+</head>
+<body>
+<h1>Mon compte</h1>
+<a href="/logout">Se déconnecter</a>
+
+<form action="/account" method="POST" enctype="multipart/form-data">
+    <label for="new_username">Nouveau nom d'utilisateur (optionnel) :</label>
+    <input type="text" id="new_username" name="new_username" placeholder="{{.Username}}">
+    <br>
+    <label for="profile_picture">Photo de profil (optionnel) :</label>
+    <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+    <br>
+    <button type="submit">Mettre à jour</button>
+</form>
+
+{{if .ProfilePicture}}
+    <h3>Photo actuelle :</h3>
+    <img src="/static/uploads/{{.ProfilePicture}}" alt="Photo de profil" style="max-width:120px;max-height:120px;border-radius:50%;">
+{{end}}
+
+</body>
+</html>
