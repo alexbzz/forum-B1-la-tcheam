@@ -28,7 +28,6 @@
     <main>
         <section class="posts-list">
             <h2>Tous les posts</h2>
-
             {{ if .Posts }}
                 {{ range .Posts }}
                 <article class="post-card">
@@ -40,8 +39,7 @@
                     <div class="post-excerpt">
                         {{ .Content }}
                     </div>
-                    <a href="/post/{{ .ID }}" class="btn read-more">Lire la suite</a>
-                </article>
+                    <a href="/post?id={{ .ID }}" class="read-more">Lire la suite</a>                </article>
                 {{ end }}
             {{ else }}
                 <div class="no-posts-message">

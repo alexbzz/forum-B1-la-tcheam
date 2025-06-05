@@ -38,6 +38,7 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/post/", Handler.ServePostDetailPage)
 	http.HandleFunc("/AllPost", Handler.ServeAllPostPage)
 	http.HandleFunc("/posts", Handler.ServePostPage)
 	http.HandleFunc("/create-post", Handler.CreatePostHandler)

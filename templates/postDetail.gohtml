@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Post.Title }} | Forum La Tcheam</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
+</head>
+<body>
+    <header>
+        <h1>Forum de la Tcheam</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/AllPost">Forum</a></li>
+                <li><a href="/create-post">Create Post</a></li>
+                {{ if .Username }}
+                    <li><span>Bonjour, {{ .Username }}</span></li>
+                {{ else }}
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/registe">Register</a></li>
+                {{ end }}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <article class="post-detail">
+            <h2>{{ .Post.Title }}</h2>
+            <div class="post-meta">
+                <span class="author">Par {{ .Post.Author }}</span>
+                <span class="date">Le {{ .Post.CreatedAt.Format "02/01/2006 à 15:04" }}</span>
+            </div>
+            <div class="post-content">
+                {{ .Post.Content }}
+            </div>
+            <a href="/AllPost" class="btn">Retour aux posts</a>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 La Tcheam. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>
