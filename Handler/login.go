@@ -10,7 +10,7 @@ import (
 )
 
 func ServeLoginPage(w http.ResponseWriter, r *http.Request) {
-	templatePath := filepath.Join("../templates/", "login.html")
+	templatePath := filepath.Join("templates/index.html")
 	fmt.Println("Tentative de charger le template:", templatePath)
 
 	tmpl, err := template.ParseFiles(templatePath)
