@@ -63,15 +63,5 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Authentification réussie
 	fmt.Println("Connexion réussie pour", username)
-
-	cookie := http.Cookie{
-		Name:     "username",
-		Value:    username,
-		Path:     "/",
-		MaxAge:   3600,
-		HttpOnly: true,
-	}
-
-	http.SetCookie(w, &cookie)
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	http.Redirect(w, r, "/index", http.StatusSeeOther)
 }
