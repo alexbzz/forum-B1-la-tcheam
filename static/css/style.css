@@ -80,3 +80,18 @@ footer {
   right: 20px;
   font-weight: bold;
 }
+.account-btn {
+  display: inline-block;
+  background: #4078c0;
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 20px auto 0 auto;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+}
+.account-btn:hover {
+  background: #273c75;
+}
