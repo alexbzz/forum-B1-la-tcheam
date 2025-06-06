@@ -17,11 +17,7 @@ var db *sql.DB
 
 func main() {
 	var err error
-<<<<<<< HEAD
 	dsn := "root:1234@tcp(127.0.0.1:3306)/forum"
-=======
-	dsn := "root:Youyou3000.@tcp(127.0.0.1:3306)/forum"
->>>>>>> 520a64c (feat(go,html): correction des templatespath)
 	db, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal("Erreur de connexion à la base :", err)
@@ -33,12 +29,7 @@ func main() {
 
 	Handler.InitDB(db)
 
-<<<<<<< HEAD
 	staticDir := "./static"
-=======
-	staticDir := "./forum-B1-la-tcheam/static"
-
->>>>>>> 520a64c (feat(go,html): correction des templatespath)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir))))
 
 	// Pages Register Login
