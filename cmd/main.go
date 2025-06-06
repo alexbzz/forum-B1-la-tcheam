@@ -50,10 +50,21 @@ func main() {
 	http.HandleFunc("/auth/google", auth.GoogleLogin)
 	http.HandleFunc("/auth/google/callback", auth.GoogleCallback)
 
+	// GITHUB Auth
+	http.HandleFunc("/auth/github", auth.GithubLogin)
+	http.HandleFunc("/auth/github/callback", auth.GithubCallback)
+
 	http.HandleFunc("/index", Handler.ServeIndexPage)
 
 	fmt.Println("Serveur lancé sur : http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
-}
 
-//Load the .env file in the current directory
+	http.HandleFunc("/post/", Handler.ServePostDetailPage)
+	http.HandleFunc("/AllPost", Handler.ServeAllPostPage)
+	http.HandleFunc("/posts", Handler.ServePostPage)
+	http.HandleFunc("/create-post", Handler.CreatePostHandler)
+	http.HandleFunc("/", Handler.ServeIndexPage)
+	///http.HandleFunc("/logout", Handler.LogoutHandler)
+	fmt.Println("Serveur lancé sur : http://localhost:8081")
+	log.Fatal(http.ListenAndServe(":8081", nil))
+}

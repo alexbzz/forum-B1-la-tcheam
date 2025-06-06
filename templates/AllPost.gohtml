@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tous les posts | Forum La Tcheam</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Forum La Tcheam</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/AllPost">Forum</a></li>
+                <li><a href="/create-post">Créer un post</a></li>
+                <li><a href="/login">Connexion</a></li>
+                <li><a href="/registe">Inscription</a></li>
+                <li><a href="/logout">Déconnexion</a></li>
+            </ul>
+        </nav>
+        <div class="user-info">
+            {{ if .Username }}
+                <span>Bonjour, {{ .Username }}</span>
+            {{ end }}
+        </div>
+    </header>
+
+    <main>
+        <section class="posts-list">
+            <h2>Tous les posts</h2>
+            {{ if .Posts }}
+                {{ range .Posts }}
+                <article class="post-card">
+                    <h3 class="post-title"><a href="/post/{{ .ID }}">{{ .Title }}</a></h3>
+                    <div class="post-meta">
+                        <span class="post-author">Par: {{ .Author }}</span>
+                        <span class="post-date">Le: {{ .CreatedAt }}</span>
+                    </div>
+                    <div class="post-excerpt">
+                        {{ .Content }}
+                    </div>
+                    <a href="/post?id={{ .ID }}" class="read-more">Lire la suite</a>                </article>
+                {{ end }}
+            {{ else }}
+                <div class="no-posts-message">
+                    <p>Aucun post n'a été créé pour le moment.</p>
+                    {{ if .Username }}
+                        <p>Soyez le premier à <a href="/create-post">créer un post</a> !</p>
+                    {{ else }}
+                        <p><a href="/login">Connectez-vous</a> pour créer un post.</p>
+                    {{ end }}
+                </div>
+            {{ end }}
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 La Tcheam. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>
