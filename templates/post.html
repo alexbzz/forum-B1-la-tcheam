@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Post</title>
 </head>
 <body>
+
+<h2>{{.Post.Title}}</h2>
+<p>{{.Post.Content}}</p>
+
+<div id="like-status"></div>
+
+<button onclick="sendLike(true)">👍 Like</button>
+<button onclick="sendLike(false)">👎 Dislike</button>
+
+<script>
+    function sendLike(isLike) {
+        fetch("/like", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({
+                post_id: "{{.Post.ID}}",
+                like: isLike,
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("like-status").innerText = "Action enregistrée.";
+            })
+            .catch(error => {
+                document.getElementById("like-status").innerText = "Erreur.";
+            });
+    }
+</script>
 
 </body>
 </html>
