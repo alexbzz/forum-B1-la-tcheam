@@ -25,9 +25,7 @@ func main() {
 
 	Handler.InitDB(db)
 
-	staticDir := "./static"
-
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir))))
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./forum-B1-la-tcheam/static"))))
 	http.HandleFunc("/register", Handler.RegisterHandler)
 	http.HandleFunc("/registe", Handler.ServeRegisterPage)
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
