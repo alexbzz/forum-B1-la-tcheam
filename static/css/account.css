@@ -1,69 +1,94 @@
 body {
-    background: #f5f6fa;
-    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    font-family: Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
+    color: #1c1e21;
 }
 
-h2 {
-    text-align: center;
-    color: #273c75;
-    margin-top: 40px;
+header {
+    background-color: #fff;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+header h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    margin: 30px;
+    justify-content: center;
 }
 
 form {
-    background: #fff;
-    max-width: 350px;
-    margin: 30px auto 0 auto;
-    padding: 30px 25px 20px 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
     display: flex;
     flex-direction: column;
     gap: 15px;
+    max-width: 400px;
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 label {
-    color: #353b48;
-    margin-bottom: 5px;
+    font-weight: bold;
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="email"],
+input[type="file"] {
     padding: 10px;
-    border: 1px solid #dcdde1;
-    border-radius: 4px;
-    font-size: 1em;
-    background: #f1f2f6;
-    transition: border 0.2s;
+    font-size: 16px;
+    border: 1px solid #ccd0d5;
+    border-radius: 6px;
+    background-color: #fff;
+    transition: border-color 0.3s;
 }
 
 input[type="text"]:focus,
-input[type="password"]:focus {
-    border: 1.5px solid #4078c0;
+input[type="password"]:focus,
+input[type="email"]:focus {
+    border-color: #1877f2;
     outline: none;
 }
 
 button {
-    background: #4078c0;
-    color: #fff;
+    padding: 12px;
+    background-color: #1877f2;
+    color: white;
     border: none;
-    padding: 10px 0;
-    border-radius: 4px;
-    font-size: 1em;
+    border-radius: 6px;
+    font-size: 16px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background-color 0.3s;
 }
 
 button:hover {
-    background: #273c75;
+    background-color: #165fbd;
 }
 
-p, a {
-    text-align: center;
-    color: #353b48;
-    margin-top: 20px;
+a {
+    display: inline-block;
+    margin: 20px;
     text-decoration: none;
+    color: #1877f2;
+    font-weight: bold;
 }
 
 a:hover {
