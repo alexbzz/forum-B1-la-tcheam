@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Inscription</title>
-    <link rel="stylesheet" href="/static/css/register-login.css" />
+    <link rel="stylesheet" href="/static/css/register" />
 </head>
 
 <body>
@@ -24,24 +24,21 @@
             <input type="password" id="password" name="password" required>
         </div>
         <button type="submit">S'inscrire</button>
+
+
+        <a href="/auth/google">
+            <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png"
+                alt="Google login" />
+        </a>
+
+        <a href="/auth/github">
+            <img class="github-btn-img" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                alt="GitHub login" style="height: 40px; width: auto;" />
+        </a>
     </form>
 
-    <p style="text-align: center; margin-top: 20px;">Ou</p>
-
-    <div style="text-align: center; margin-top: 10px;">
-        <a href="/auth/google" class="google-btn">Se connecter avec Google</a>
-    </div>
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <button type="submit">Register</button>
-</form>
-<p>Already an account ?  <a href="/login">Login</a></p>
+    </form>
+    <p>Already an account ? <a href="/login">Login</a></p>
 </body>
 
 </html>

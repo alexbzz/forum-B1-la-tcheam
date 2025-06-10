@@ -78,16 +78,13 @@ a {
 a:hover {
   text-decoration: underline;
 }
-.google-btn {
-  display: inline-block;
-  background-color: #4285F4;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: bold;
-}
 
-.google-btn:hover {
-  background-color: #3367D6;
+.github-btn-img {
+  height: 40px;
+  width: auto;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.github-btn-img:hover {
+  transform: scale(1.05);
 }
