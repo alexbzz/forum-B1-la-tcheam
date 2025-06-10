@@ -41,6 +41,7 @@ func main() {
 	http.HandleFunc("/posts", Handler.ServePostPage)
 	http.HandleFunc("/create-post", Handler.CreatePostHandler)
 	http.HandleFunc("/", Handler.ServeIndexPage)
+	http.HandleFunc("/account", Handler.ServeAccountPage)
 	///http.HandleFunc("/logout", Handler.LogoutHandler)
 	fmt.Println("Serveur lancé sur : http://localhost:8081")
 	log.Fatal(http.ListenAndServe(":8081", nil))
