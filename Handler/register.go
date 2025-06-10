@@ -3,9 +3,11 @@ package Handler
 import (
 	"database/sql"
 	"fmt"
-	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
+	"path/filepath"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 var db *sql.DB
@@ -15,8 +17,10 @@ func InitDB(database *sql.DB) {
 }
 
 func ServeRegisterPage(w http.ResponseWriter, r *http.Request) {
+	// Chemin direct vers votre dossier templates
+	// Remplacez par le chemin réel où se trouve votre dossier templates
 
-	templatePath := "./forum-B1-la-tcheam/templates/register.html"
+	templatePath := filepath.Join("./templates", "register.html")
 
 	tmpl, err := template.ParseFiles(templatePath)
 	if err != nil {

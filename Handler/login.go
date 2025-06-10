@@ -2,13 +2,16 @@ package Handler
 
 import (
 	"fmt"
-	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
+	"path/filepath"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func ServeLoginPage(w http.ResponseWriter, r *http.Request) {
-	templatePath := "./forum-B1-la-tcheam/templates/login.html"
+	templatePath := filepath.Join("./templates/login.html")
+
 	fmt.Println("Tentative de charger le template:", templatePath)
 
 	tmpl, err := template.ParseFiles(templatePath)
