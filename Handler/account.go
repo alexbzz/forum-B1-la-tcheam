@@ -3,11 +3,13 @@ package Handler
 import (
 	"database/sql"
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -15,6 +17,33 @@ func SetDB(database *sql.DB) {
 	db = database
 }
 
+// Validation de la complexité du mot de passe
+func validatePasswordComplexity(pwd string) error {
+	if len(pwd) < 8 {
+		return fmt.Errorf("le mot de passe doit contenir au moins 8 caractères")
+	}
+
+	maj := regexp.MustCompile(`[A-Z]`)
+	min := regexp.MustCompile(`[a-z]`)
+	num := regexp.MustCompile(`[0-9]`)
+	spec := regexp.MustCompile(`[!@#~$%^&*()+|_.,<>?/\\-]`)
+
+	if !maj.MatchString(pwd) {
+		return fmt.Errorf("le mot de passe doit contenir au moins une lettre majuscule")
+	}
+	if !min.MatchString(pwd) {
+		return fmt.Errorf("le mot de passe doit contenir au moins une lettre minuscule")
+	}
+	if !num.MatchString(pwd) {
+		return fmt.Errorf("le mot de passe doit contenir au moins un chiffre")
+	}
+	if !spec.MatchString(pwd) {
+		return fmt.Errorf("le mot de passe doit contenir au moins un caractère spécial")
+	}
+	return nil
+}
+
+// Affiche la page compte avec la photo profil
 func ServeAccountPage(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("username")
 	if err != nil {
@@ -32,14 +61,14 @@ func ServeAccountPage(w http.ResponseWriter, r *http.Request) {
 
 	var imagePath string
 	if len(profilePicture) > 0 {
-		// Sauvegarde temporaire de l'image dans static/uploads pour affichage
 		imagePath = "static/uploads/" + cookie.Value + "_profile.jpg"
 		err := os.WriteFile(imagePath, profilePicture, 0644)
 		if err != nil {
 			fmt.Println("Erreur d'écriture de l'image :", err)
 			imagePath = ""
+		} else {
+			imagePath = filepath.Base(imagePath)
 		}
-		imagePath = filepath.Base(imagePath) // pour n'envoyer que le nom du fichier à la template
 	}
 
 	tmpl, err := template.ParseFiles("templates/account.gohtml")
@@ -54,76 +83,112 @@ func ServeAccountPage(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// Handler principal pour gérer les modifications du compte
 func AccountHandler(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("username")
 	if err != nil {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
-
-	fmt.Println("Cookie username =", cookie.Value)
+	username := cookie.Value
 
 	if r.Method == http.MethodPost {
 		newUsername := r.FormValue("new_username")
-		fmt.Println("Username actuel cookie:", cookie.Value, ", nouveau username formulaire:", newUsername)
+		newEmail := r.FormValue("new_email")
+		oldPassword := r.FormValue("old_password")
+		newPassword := r.FormValue("new_password")
+		confirmPassword := r.FormValue("confirm_password")
 
-		// Si un fichier est uploadé
+		// Mise à jour de la photo de profil
 		file, handler, err := r.FormFile("profile_picture")
 		if err == nil {
 			defer file.Close()
-
 			ext := strings.ToLower(filepath.Ext(handler.Filename))
 			if ext != ".jpg" && ext != ".jpeg" && ext != ".png" && ext != ".gif" {
 				http.Error(w, "Format d'image non supporté", http.StatusBadRequest)
 				return
 			}
-
-			fmt.Println("Fichier uploadé :", handler.Filename, "avec extension", ext)
-
 			imageData, err := io.ReadAll(file)
 			if err != nil {
 				http.Error(w, "Erreur lecture image", http.StatusInternalServerError)
-				fmt.Println("Erreur lecture image :", err)
 				return
 			}
-
-			// Mise à jour de l'image dans la BDD
-			res, err := db.Exec("UPDATE users SET photo_profil = ? WHERE username = ?", imageData, cookie.Value)
+			_, err = db.Exec("UPDATE users SET photo_profil=? WHERE username=?", imageData, username)
 			if err != nil {
 				http.Error(w, "Erreur mise à jour image", http.StatusInternalServerError)
-				fmt.Println("Erreur DB UPDATE:", err)
 				return
 			}
-			affected, _ := res.RowsAffected()
-			if affected == 0 {
-				http.Error(w, "Utilisateur introuvable pour la photo", http.StatusBadRequest)
-				fmt.Println("Aucune ligne affectée pour la photo. Username utilisé:", cookie.Value)
-				return
-			}
-			fmt.Println("Photo de profil mise à jour pour", cookie.Value)
+			fmt.Println("Photo mise à jour")
 		}
 
-		// Mise à jour du nom d'utilisateur si rempli
-		if newUsername != "" && newUsername != cookie.Value {
-			res, err := db.Exec("UPDATE users SET username=? WHERE username=?", newUsername, cookie.Value)
+		// Mise à jour du nom d'utilisateur
+		if newUsername != "" && newUsername != username {
+			_, err := db.Exec("UPDATE users SET username=? WHERE username=?", newUsername, username)
 			if err != nil {
-				http.Error(w, "Erreur lors de la mise à jour du nom", http.StatusInternalServerError)
-				fmt.Println("Erreur DB UPDATE username:", err)
+				http.Error(w, "Erreur mise à jour nom d'utilisateur", http.StatusInternalServerError)
 				return
 			}
-			affected, _ := res.RowsAffected()
-			if affected > 0 {
-				http.SetCookie(w, &http.Cookie{
-					Name:  "username",
-					Value: newUsername,
-					Path:  "/",
-				})
-				fmt.Println("Nom d'utilisateur changé de", cookie.Value, "à", newUsername)
-			} else {
-				fmt.Println("Aucune ligne affectée pour changement nom.")
+			// Mise à jour du cookie
+			http.SetCookie(w, &http.Cookie{Name: "username", Value: newUsername, Path: "/"})
+			fmt.Println("Nom d'utilisateur mis à jour :", newUsername)
+			username = newUsername // Mise à jour pour la suite
+		}
+
+		// Mise à jour de l'email
+		if newEmail != "" {
+			_, err := db.Exec("UPDATE users SET email=? WHERE username=?", newEmail, username)
+			if err != nil {
+				http.Error(w, "Erreur mise à jour email", http.StatusInternalServerError)
+				return
 			}
-		} else {
-			fmt.Println("Pas de changement de nom d'utilisateur")
+			fmt.Println("Email mis à jour :", newEmail)
+		}
+
+		// Mise à jour du mot de passe avec vérification de l'ancien
+		if newPassword != "" {
+			if newPassword != confirmPassword {
+				http.Error(w, "Les mots de passe ne correspondent pas", http.StatusBadRequest)
+				return
+			}
+			if oldPassword == "" {
+				http.Error(w, "L'ancien mot de passe est requis pour changer le mot de passe", http.StatusBadRequest)
+				return
+			}
+
+			// Validation de la complexité du nouveau mot de passe
+			if err := validatePasswordComplexity(newPassword); err != nil {
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+
+			// Récupérer le hash du mot de passe actuel
+			var currentHash []byte
+			err := db.QueryRow("SELECT password_hash FROM users WHERE username=?", username).Scan(&currentHash)
+			if err != nil {
+				http.Error(w, "Erreur récupération mot de passe", http.StatusInternalServerError)
+				return
+			}
+
+			// Vérifier que l'ancien mot de passe est correct
+			err = bcrypt.CompareHashAndPassword(currentHash, []byte(oldPassword))
+			if err != nil {
+				http.Error(w, "Ancien mot de passe incorrect", http.StatusUnauthorized)
+				return
+			}
+
+			// Hacher le nouveau mot de passe
+			hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+			if err != nil {
+				http.Error(w, "Erreur hachage mot de passe", http.StatusInternalServerError)
+				return
+			}
+
+			_, err = db.Exec("UPDATE users SET password_hash=? WHERE username=?", hashedPassword, username)
+			if err != nil {
+				http.Error(w, "Erreur mise à jour mot de passe", http.StatusInternalServerError)
+				return
+			}
+			fmt.Println("Mot de passe mis à jour")
 		}
 
 		http.Redirect(w, r, "/account", http.StatusSeeOther)

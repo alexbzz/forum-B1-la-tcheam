@@ -1,27 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
     <title>Mon compte</title>
     <link rel="stylesheet" href="/static/css/account.css">
 </head>
 <body>
-<h1>Mon compte</h1>
+
+<header>
+    {{if .ProfilePicture}}
+        <img src="/static/uploads/{{.ProfilePicture}}" alt="Photo de profil">
+    {{else}}
+        <img src="/static/images/default-profile.png" alt="Photo par défaut">
+    {{end}}
+    <h1>Bonjour {{.Username}}</h1>
+</header>
+
 <a href="/logout">Se déconnecter</a>
 
-<form action="/account" method="POST" enctype="multipart/form-data">
-    <label for="new_username">Nouveau nom d'utilisateur (optionnel) :</label>
-    <input type="text" id="new_username" name="new_username" placeholder="{{.Username}}">
-    <br>
-    <label for="profile_picture">Photo de profil (optionnel) :</label>
-    <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
-    <br>
-    <button type="submit">Mettre à jour</button>
-</form>
+<div class="container">
+    <form action="/account" method="POST" enctype="multipart/form-data">
 
-{{if .ProfilePicture}}
-    <h3>Photo actuelle :</h3>
-    <img src="/static/uploads/{{.ProfilePicture}}" alt="Photo de profil" style="max-width:120px;max-height:120px;border-radius:50%;">
-{{end}}
+        <label for="new_username">Nouveau nom d'utilisateur :</label>
+        <input type="text" id="new_username" name="new_username" placeholder="{{.Username}}">
+
+        <label for="new_email">Nouvel email :</label>
+        <input type="email" id="new_email" name="new_email" placeholder="nouveau@email.com">
+
+        <label for="old_password">Ancien mot de passe :</label>
+        <input type="password" id="old_password" name="old_password" placeholder="Votre ancien mot de passe">
+
+        <label for="new_password">Nouveau mot de passe :</label>
+        <input type="password" id="new_password" name="new_password" placeholder="Nouveau mot de passe">
+
+        <label for="confirm_password">Confirmer le mot de passe :</label>
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmer le mot de passe">
+
+        <label for="profile_picture">Photo de profil :</label>
+        <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+
+        <button type="submit">Mettre à jour</button>
+    </form>
+</div>
 
 </body>
 </html>
