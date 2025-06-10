@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Fade-in effect
     const container = document.querySelector(".container");
     container.style.opacity = 0;
     setTimeout(() => {

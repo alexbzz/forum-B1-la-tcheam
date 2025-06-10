@@ -12,7 +12,7 @@ type IndexPageData struct {
 }
 
 func ServeIndexPage(w http.ResponseWriter, r *http.Request) {
-	templatePath := filepath.Join("./templates/index.gohtml")
+	templatePath := filepath.Join("./forum-B1-la-tcheam/templates/index.gohtml")
 	fmt.Println("Tentative de charger le template:", templatePath)
 	username := "Utilisateur"
 
