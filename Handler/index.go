@@ -1,8 +1,10 @@
 package Handler
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
+	"path/filepath"
 )
 
 type IndexPageData struct {
@@ -10,6 +12,8 @@ type IndexPageData struct {
 }
 
 func ServeIndexPage(w http.ResponseWriter, r *http.Request) {
+	templatePath := filepath.Join("./forum-B1-la-tcheam/templates/index.gohtml")
+	fmt.Println("Tentative de charger le template:", templatePath)
 	username := "Utilisateur"
 
 	cookie, err := r.Cookie("username")
@@ -18,8 +22,6 @@ func ServeIndexPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := IndexPageData{Username: username}
-
-	templatePath := "./forum-B1-la-tcheam/templates/index.gohtml"
 
 	tmpl, err := template.ParseFiles(templatePath)
 	if err != nil {

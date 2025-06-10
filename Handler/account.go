@@ -13,11 +13,6 @@ import (
 	"strings"
 )
 
-func SetDB(database *sql.DB) {
-	db = database
-}
-
-// Validation de la complexité du mot de passe
 func validatePasswordComplexity(pwd string) error {
 	if len(pwd) < 8 {
 		return fmt.Errorf("le mot de passe doit contenir au moins 8 caractères")
@@ -43,7 +38,6 @@ func validatePasswordComplexity(pwd string) error {
 	return nil
 }
 
-// Affiche la page compte avec la photo profil
 func ServeAccountPage(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("username")
 	if err != nil {
@@ -69,21 +63,27 @@ func ServeAccountPage(w http.ResponseWriter, r *http.Request) {
 		} else {
 			imagePath = filepath.Base(imagePath)
 		}
+		imagePath = filepath.Base(imagePath)
 	}
 
-	tmpl, err := template.ParseFiles("templates/account.gohtml")
+	// Correction du chemin du template
+	tmpl, err := template.ParseFiles("./forum-B1-la-tcheam/templates/account.gohtml")
 	if err != nil {
-		http.Error(w, "Erreur template", http.StatusInternalServerError)
+		fmt.Println("Erreur template:", err)
+		http.Error(w, "Erreur template: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	tmpl.Execute(w, map[string]string{
+	err = tmpl.Execute(w, map[string]string{
 		"Username":       cookie.Value,
 		"ProfilePicture": imagePath,
 	})
+	if err != nil {
+		fmt.Println("Erreur d'exécution du template:", err)
+		http.Error(w, "Erreur d'affichage: "+err.Error(), http.StatusInternalServerError)
+	}
 }
 
-// Handler principal pour gérer les modifications du compte
 func AccountHandler(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("username")
 	if err != nil {
@@ -99,18 +99,22 @@ func AccountHandler(w http.ResponseWriter, r *http.Request) {
 		newPassword := r.FormValue("new_password")
 		confirmPassword := r.FormValue("confirm_password")
 
-		// Mise à jour de la photo de profil
 		file, handler, err := r.FormFile("profile_picture")
 		if err == nil {
 			defer file.Close()
+
 			ext := strings.ToLower(filepath.Ext(handler.Filename))
 			if ext != ".jpg" && ext != ".jpeg" && ext != ".png" && ext != ".gif" {
 				http.Error(w, "Format d'image non supporté", http.StatusBadRequest)
 				return
 			}
+
+			fmt.Println("Fichier uploadé :", handler.Filename, "avec extension", ext)
+
 			imageData, err := io.ReadAll(file)
 			if err != nil {
 				http.Error(w, "Erreur lecture image", http.StatusInternalServerError)
+				fmt.Println("Erreur lecture image :", err)
 				return
 			}
 			_, err = db.Exec("UPDATE users SET photo_profil=? WHERE username=?", imageData, username)
@@ -121,20 +125,17 @@ func AccountHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Photo mise à jour")
 		}
 
-		// Mise à jour du nom d'utilisateur
 		if newUsername != "" && newUsername != username {
 			_, err := db.Exec("UPDATE users SET username=? WHERE username=?", newUsername, username)
 			if err != nil {
 				http.Error(w, "Erreur mise à jour nom d'utilisateur", http.StatusInternalServerError)
 				return
 			}
-			// Mise à jour du cookie
 			http.SetCookie(w, &http.Cookie{Name: "username", Value: newUsername, Path: "/"})
 			fmt.Println("Nom d'utilisateur mis à jour :", newUsername)
-			username = newUsername // Mise à jour pour la suite
+			username = newUsername
 		}
 
-		// Mise à jour de l'email
 		if newEmail != "" {
 			_, err := db.Exec("UPDATE users SET email=? WHERE username=?", newEmail, username)
 			if err != nil {
@@ -161,7 +162,6 @@ func AccountHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			// Récupérer le hash du mot de passe actuel
 			var currentHash []byte
 			err := db.QueryRow("SELECT password_hash FROM users WHERE username=?", username).Scan(&currentHash)
 			if err != nil {

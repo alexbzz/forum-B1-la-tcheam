@@ -2,13 +2,16 @@ package Handler
 
 import (
 	"fmt"
-	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
+	"path/filepath"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func ServeLoginPage(w http.ResponseWriter, r *http.Request) {
-	templatePath := "./forum-B1-la-tcheam/templates/login.html"
+	templatePath := filepath.Join("./forum-B1-la-tcheam/templates/login.html")
+
 	fmt.Println("Tentative de charger le template:", templatePath)
 
 	tmpl, err := template.ParseFiles(templatePath)
@@ -19,7 +22,6 @@ func ServeLoginPage(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, nil)
 }
 
-// LoginHandler gère la soumission du formulaire de connexion
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
@@ -41,7 +43,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Récupérer l'utilisateur depuis la base de données
 	var storedHash string
 	var userID int
 	err := db.QueryRow("SELECT id, password_hash FROM users WHERE username = ?", username).Scan(&userID, &storedHash)
@@ -59,7 +60,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Authentification réussie
 	fmt.Println("Connexion réussie pour", username)
 
 	cookie := http.Cookie{

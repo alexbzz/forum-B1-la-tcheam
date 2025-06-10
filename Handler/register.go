@@ -6,6 +6,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
+	"path/filepath"
+
+	"golang.org/x/crypto/bcrypt"
 	"regexp"
 	"strings"
 )
@@ -17,7 +20,8 @@ func InitDB(database *sql.DB) {
 }
 
 func ServeRegisterPage(w http.ResponseWriter, r *http.Request) {
-	templatePath := "./templates/register.html"
+
+	templatePath := filepath.Join("./forum-B1-la-tcheam/templates/register.html")
 
 	tmpl, err := template.ParseFiles(templatePath)
 	if err != nil {
@@ -92,4 +96,8 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(w, r, "/index", http.StatusSeeOther)
+}
+
+func contains(s, substr string) bool {
+	return s != "" && (len(s) >= len(substr)) && (s[:len(substr)] == substr || s[len(s)-len(substr):] == substr || s[1:len(s)-1] != "" && contains(s[1:len(s)-1], substr))
 }

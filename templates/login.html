@@ -1,21 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
+    <meta charset="UTF-8" />
     <title>Login</title>
+    <link rel="stylesheet" href="/static/css/login.css" />
 </head>
+
 <body>
-    <h1>Login</h1>
-    <form action="/login" method="POST">
-        <div>
-            <label for="username">UserName :</label>
-            <input type="text" id="username" name="username" required>
-        </div>
-        <div>
-            <label for="password">PassWord</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">Login</button>
-    </form>
-    <p>Create an account <a href="/registe">Register</a></p>
+    <div class="container">
+        <h1>Login</h1>
+        <form action="/login" method="POST">
+            <div class="input-group">
+                <label for="username">UserName</label>
+                <input type="text" id="username" name="username" required />
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required />
+            </div>
+
+            <button type="submit" class="button-49">Login</button>
+
+            <div class="social-login">
+                <a href="/auth/google">
+                    <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png"
+                        alt="Google login" />
+                </a>
+                <a href="/auth/github">
+                    <img class="github-btn-img"
+                        src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                        alt="GitHub login" style="height: 40px; width: auto;" />
+                </a>
+            </div>
+        </form>
+
+        <p>Create an account <a href="/registe">Register</a></p>
+    </div>
+
+    <script src="/static/js/login-effect.js"></script>
 </body>
+
 </html>
