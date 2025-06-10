@@ -14,7 +14,7 @@ var db *sql.DB
 
 func main() {
 	var err error
-	dsn := "root:Alexandre08@tcp(127.0.0.1:3306)/forum"
+	dsn := "root:Youyou3000.@tcp(127.0.0.1:3306)/forum"
 	db, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal("Erreur de connexion à la base :", err)
@@ -43,7 +43,7 @@ func main() {
 	http.HandleFunc("/posts", Handler.ServePostPage)
 	http.HandleFunc("/create-post", Handler.CreatePostHandler)
 	http.HandleFunc("/", Handler.ServeIndexPage)
-	http.HandleFunc("/logout", Handler.LogoutHandler)
+	///http.HandleFunc("/logout", Handler.LogoutHandler)
 	fmt.Println("Serveur lancé sur : http://localhost:8081")
 	log.Fatal(http.ListenAndServe(":8081", nil))
 }

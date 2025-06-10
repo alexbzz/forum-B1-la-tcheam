@@ -32,14 +32,13 @@ func ServeAccountPage(w http.ResponseWriter, r *http.Request) {
 
 	var imagePath string
 	if len(profilePicture) > 0 {
-		// Sauvegarde temporaire de l'image dans static/uploads pour affichage
 		imagePath = "static/uploads/" + cookie.Value + "_profile.jpg"
 		err := os.WriteFile(imagePath, profilePicture, 0644)
 		if err != nil {
 			fmt.Println("Erreur d'écriture de l'image :", err)
 			imagePath = ""
 		}
-		imagePath = filepath.Base(imagePath) // pour n'envoyer que le nom du fichier à la template
+		imagePath = filepath.Base(imagePath)
 	}
 
 	tmpl, err := template.ParseFiles("templates/account.gohtml")
@@ -103,7 +102,6 @@ func AccountHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Photo de profil mise à jour pour", cookie.Value)
 		}
 
-		// Mise à jour du nom d'utilisateur si rempli
 		if newUsername != "" && newUsername != cookie.Value {
 			res, err := db.Exec("UPDATE users SET username=? WHERE username=?", newUsername, cookie.Value)
 			if err != nil {

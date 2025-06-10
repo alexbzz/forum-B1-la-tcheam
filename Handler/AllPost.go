@@ -7,7 +7,6 @@ import (
 	"time"
 )
 
-// PostView est une structure spécifique pour l'affichage des posts
 type PostView struct {
 	ID        int
 	Title     string
@@ -18,7 +17,7 @@ type PostView struct {
 
 type AllPostData struct {
 	Username string
-	Posts    []PostView // Changé de []Post à []PostView
+	Posts    []PostView
 }
 
 func ServeAllPostPage(w http.ResponseWriter, r *http.Request) {
@@ -68,7 +67,6 @@ func ServeAllPostPage(w http.ResponseWriter, r *http.Request) {
 			createdAt = time.Now() // Valeur par défaut
 		}
 
-		// Création d'un PostView à partir des données récupérées
 		postView := PostView{
 			ID:        post.ID,
 			Title:     post.Title,

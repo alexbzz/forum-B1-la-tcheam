@@ -61,20 +61,17 @@ func ServePostPage(w http.ResponseWriter, r *http.Request) {
 	username := cookie.Value
 	fmt.Println("Utilisateur connecté:", username)
 
-	// Récupération des données du formulaire
 	title := r.FormValue("title")
 	content := r.FormValue("content")
 	fmt.Println("Données du formulaire - Titre:", title)
 	fmt.Println("Données du formulaire - Contenu:", content)
 
-	// Validation des champs
 	if title == "" || content == "" {
 		fmt.Println("Validation échouée: champs vides")
 		http.Error(w, "Tous les champs sont obligatoires", http.StatusBadRequest)
 		return
 	}
 
-	// Test de la connexion à la base de données
 	var testResult int
 	err = db.QueryRow("SELECT 1").Scan(&testResult)
 	if err != nil {
@@ -84,7 +81,6 @@ func ServePostPage(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println("Test de connexion réussi:", testResult)
 
-	// Récupération de l'ID utilisateur
 	var userID int
 	err = db.QueryRow("SELECT id FROM users WHERE username = ?", username).Scan(&userID)
 	if err != nil {
@@ -94,7 +90,6 @@ func ServePostPage(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println("ID utilisateur récupéré:", userID)
 
-	// Insertion sans spécifier created_at (utilisation de la valeur par défaut)
 	result, err := db.Exec(
 		"INSERT INTO posts (user_id, title, content) VALUES (?, ?, ?)",
 		userID, title, content)
@@ -105,7 +100,6 @@ func ServePostPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Vérification que l'insertion a bien fonctionné
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
 		fmt.Println("Erreur lors de la vérification des lignes affectées:", err)
@@ -115,6 +109,5 @@ func ServePostPage(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Post créé avec succès! Lignes affectées:", rowsAffected)
 	}
 
-	// Redirection vers la page des posts
 	http.Redirect(w, r, "/AllPost", http.StatusSeeOther)
 }

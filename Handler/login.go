@@ -19,7 +19,6 @@ func ServeLoginPage(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, nil)
 }
 
-// LoginHandler gère la soumission du formulaire de connexion
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
@@ -41,7 +40,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Récupérer l'utilisateur depuis la base de données
 	var storedHash string
 	var userID int
 	err := db.QueryRow("SELECT id, password_hash FROM users WHERE username = ?", username).Scan(&userID, &storedHash)
@@ -59,7 +57,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Authentification réussie
 	fmt.Println("Connexion réussie pour", username)
 
 	cookie := http.Cookie{
