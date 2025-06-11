@@ -30,7 +30,7 @@ func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
 		Username: username,
 	}
 
-	templatePath := "./forum-B1-la-tcheam/templates/post.gohtml"
+	templatePath := "./templates/post.gohtml"
 	tmpl, err := template.ParseFiles(templatePath)
 	if err != nil {
 		http.Error(w, "Erreur de template: "+err.Error(), http.StatusInternalServerError)

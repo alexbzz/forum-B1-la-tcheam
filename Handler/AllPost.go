@@ -38,7 +38,6 @@ func ServeAllPostPage(w http.ResponseWriter, r *http.Request) {
 		Categories: []Category{},
 	}
 
-	// Récupérer le nom d'utilisateur du cookie
 	if cookie, err := r.Cookie("username"); err == nil {
 		data.Username = cookie.Value
 	}

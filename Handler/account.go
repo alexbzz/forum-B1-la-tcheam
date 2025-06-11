@@ -66,8 +66,7 @@ func ServeAccountPage(w http.ResponseWriter, r *http.Request) {
 		imagePath = filepath.Base(imagePath)
 	}
 
-	// Correction du chemin du template
-	tmpl, err := template.ParseFiles("./forum-B1-la-tcheam/templates/account.gohtml")
+	tmpl, err := template.ParseFiles("./templates/account.gohtml")
 	if err != nil {
 		fmt.Println("Erreur template:", err)
 		http.Error(w, "Erreur template: "+err.Error(), http.StatusInternalServerError)

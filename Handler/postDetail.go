@@ -63,7 +63,7 @@ func ServePostDetailPage(w http.ResponseWriter, r *http.Request) {
 
 	data.Post = postView
 
-	tmpl, err := template.ParseFiles("./forum-B1-la-tcheam/templates/postDetail.gohtml")
+	tmpl, err := template.ParseFiles("./templates/postDetail.gohtml")
 	if err != nil {
 		fmt.Println("Erreur lors du chargement du template:", err)
 		http.Error(w, "Erreur interne du serveur", http.StatusInternalServerError)
