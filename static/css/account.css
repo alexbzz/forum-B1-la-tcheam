@@ -1,17 +1,34 @@
 body {
-    background: #f0f2f5;
-    font-family: Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
-    color: #1c1e21;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(120deg, #1f1c2c, #928dab);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 
 header {
-    background-color: #fff;
-    padding: 15px 20px;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 400px;
+    width: 100%;
+}
+
+header:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
 }
 
 header img {
@@ -19,78 +36,291 @@ header img {
     height: 80px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 20px;
+    border: 3px solid #00ffff;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+header img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
 }
 
 header h1 {
-    font-size: 24px;
     margin: 0;
+    font-size: 24px;
+    background: linear-gradient(45deg, #00ffff, #8e2de2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+}
+
+a[href="/logout"] {
+    color: #fff;
+    background: linear-gradient(45deg, #ff4757, #ff6b7a);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+a[href="/logout"]:hover {
+    background: linear-gradient(45deg, #ff6b7a, #ff4757);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
 }
 
 .container {
-    display: flex;
-    margin: 30px;
-    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 40px 50px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
 }
 
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    max-width: 400px;
-    width: 100%;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    position: relative;
+    transition: 0.3s ease;
 }
 
 label {
+    margin-bottom: 6px;
     font-weight: bold;
+    color: #ccc;
+    transition: color 0.3s ease;
+    font-size: 14px;
 }
 
 input[type="text"],
-input[type="password"],
 input[type="email"],
-input[type="file"] {
-    padding: 10px;
+input[type="password"] {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
     font-size: 16px;
-    border: 1px solid #ccd0d5;
-    border-radius: 6px;
-    background-color: #fff;
-    transition: border-color 0.3s;
+    background-color: rgba(240, 240, 240, 0.9);
+    color: #000;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
 input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus {
-    border-color: #1877f2;
+input[type="email"]:focus,
+input[type="password"]:focus {
     outline: none;
+    border-color: #00ffff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.95);
 }
 
-button {
-    padding: 12px;
-    background-color: #1877f2;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
+input[type="file"] {
+    padding: 10px;
+    border: 2px dashed #00ffff;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
 }
 
-button:hover {
-    background-color: #165fbd;
+input[type="file"]:hover {
+    border-color: #8e2de2;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-a {
+input[type="file"]::-webkit-file-upload-button {
+    background: linear-gradient(45deg, #6a00ff, #8e2de2);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+    background: linear-gradient(45deg, #8e2de2, #6a00ff);
+    transform: translateY(-1px);
+}
+
+/* Submit button with glitch effect inspired style */
+button[type="submit"] {
+    position: relative;
     display: inline-block;
-    margin: 20px;
-    text-decoration: none;
-    color: #1877f2;
-    font-weight: bold;
+    padding: 12px 20px;
+    width: 100%;
+    color: #fff;
+    background: linear-gradient(45deg, #6a00ff, #8e2de2);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    overflow: hidden;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    transition: background 0.3s ease;
+    box-shadow: 0 4px 15px rgba(142, 45, 226, 0.6);
+    font-size: 16px;
 }
 
-a:hover {
-    text-decoration: underline;
+button[type="submit"]::before,
+button[type="submit"]::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(60deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 60%);
+    transform: rotate(25deg);
+    transition: transform 0.5s ease;
+    pointer-events: none;
+    border-radius: 8px;
+}
+
+button[type="submit"]::after {
+    top: auto;
+    bottom: -50%;
+    left: -50%;
+    transform: rotate(-25deg);
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(45deg, #8e2de2, #6a00ff);
+    box-shadow: 0 6px 20px rgba(106, 0, 255, 0.9);
+    transform: translateY(-2px);
+}
+
+button[type="submit"]:hover::before {
+    transform: rotate(25deg) translateX(20%);
+}
+
+button[type="submit"]:hover::after {
+    transform: rotate(-25deg) translateX(-20%);
+}
+
+/* Focus states for better accessibility */
+input:focus + label,
+.input-group.active label {
+    color: #00ffff;
+}
+
+/* Placeholder styling */
+input::placeholder {
+    color: #666;
+    opacity: 0.8;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 30px 25px;
+        margin: 10px;
+    }
+
+    header {
+        padding: 20px;
+        margin-bottom: 15px;
+    }
+
+    header img {
+        width: 60px;
+        height: 60px;
+    }
+
+    header h1 {
+        font-size: 20px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    button[type="submit"] {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 25px 20px;
+    }
+
+    header {
+        padding: 15px;
+    }
+
+    form {
+        gap: 15px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    label {
+        font-size: 12px;
+    }
+}
+
+/* Animation for form elements */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+header {
+    animation: fadeInUp 0.6s ease-out 0.1s both;
+}
+
+a[href="/logout"] {
+    animation: fadeInUp 0.6s ease-out 0.2s both;
 }
