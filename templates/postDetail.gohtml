@@ -7,39 +7,126 @@
     <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
 </head>
 <body>
-    <header>
-        <h1>Forum de la Tcheam</h1>
-        <nav>
-            <ul>
-                <li><a href="/">Accueil</a></li>
-                <li><a href="/AllPost">Forum</a></li>
-                <li><a href="/create-post">Create Post</a></li>
-                {{ if .Username }}
-                    <li><span>Bonjour, {{ .Username }}</span></li>
-                {{ else }}
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/registe">Register</a></li>
-                {{ end }}
-            </ul>
-        </nav>
-    </header>
+<header>
+    <h1>Forum de la Tcheam</h1>
+    <nav>
+        <ul>
+            <li><a href="/">Accueil</a></li>
+            <li><a href="/AllPost">Forum</a></li>
+            <li><a href="/create-post">Create Post</a></li>
+            {{ if .Username }}
+                <li><span>Bonjour, {{ .Username }}</span></li>
+            {{ else }}
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            {{ end }}
+        </ul>
+    </nav>
+</header>
 
-    <main>
-        <article class="post-detail">
-            <h2>{{ .Post.Title }}</h2>
-            <div class="post-meta">
-                <span class="author">Par {{ .Post.Author }}</span>
-                <span class="date">Le {{ .Post.CreatedAt.Format "02/01/2006 à 15:04" }}</span>
-            </div>
-            <div class="post-content">
-                {{ .Post.Content }}
-            </div>
-            <a href="/AllPost" class="btn">Retour aux posts</a>
-        </article>
-    </main>
+<main>
+    <article class="post-detail">
+        <h2>{{ .Post.Title }}</h2>
+        <div class="post-meta">
+            <span class="author">Par {{ .Post.Author }}</span>
+            <span class="date">Le {{ .Post.CreatedAt.Format "02/01/2006 à 15:04" }}</span>
+        </div>
+        <div class="post-content">
+            {{ .Post.Content }}
+        </div>
 
-    <footer>
-        <p>&copy; 2025 La Tcheam. Tous droits réservés.</p>
-    </footer>
+        <!-- Réactions -->
+        <div class="reactions">
+            <button onclick="react({{ .Post.ID }}, 'like')">👍 {{ .Post.Likes }}</button>
+            <button onclick="react({{ .Post.ID }}, 'dislike')">👎 {{ .Post.Dislikes }}</button>
+        </div>
+
+        <a href="/AllPost" class="btn">Retour aux posts</a>
+    </article>
+
+    <!-- Section des commentaires -->
+    {{ if .Username }}
+        <div class="comments-section">
+            <h3>Commentaires</h3>
+
+            <!-- Formulaire d'ajout de commentaire (seulement si connecté) -->
+            <div class="comment-form">
+                <form action="/add-comment" method="POST">
+                    <input type="hidden" name="post_id" value="{{ .Post.ID }}">
+                    <textarea name="content" placeholder="Écrire un commentaire..." required></textarea>
+                    <button type="submit">Publier le commentaire</button>
+                </form>
+            </div>
+
+            <!-- Liste des commentaires -->
+            <div id="comments-list">
+                <!-- Les commentaires seront chargés ici via JavaScript -->
+                <p>Chargement des commentaires...</p>
+            </div>
+        </div>
+    {{ else }}
+        <div class="comments-section">
+            <h3>Commentaires</h3>
+            <p><a href="/login">Connectez-vous</a> pour voir et écrire des commentaires.</p>
+        </div>
+    {{ end }}
+</main>
+
+<footer>
+    <p>&copy; 2025 La Tcheam. Tous droits réservés.</p>
+</footer>
+
+<script>
+    // Fonction pour charger les commentaires
+    function loadComments() {
+        fetch('/get-comments?post_id={{ .Post.ID }}')
+            .then(response => response.json())
+            .then(comments => {
+                console.log('Commentaires reçus:', comments);
+                const commentsList = document.getElementById('comments-list');
+                if (comments && comments.length > 0) {
+                    commentsList.innerHTML = comments.map(comment => `
+                            <div class="comment">
+                                <div>
+                                    <span class="comment-author">${comment.author}</span>
+                                    <span class="comment-date">${comment.created_at}</span>
+                                </div>
+                                <div class="comment-content">${comment.content}</div>
+                            </div>
+                        `).join('');
+                } else {
+                    commentsList.innerHTML = '<p>Aucun commentaire pour le moment.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement des commentaires:', error);
+                document.getElementById('comments-list').innerHTML = '<p>Erreur lors du chargement des commentaires.</p>';
+            });
+    }
+
+    // Fonction pour les réactions
+    function react(postId, type) {
+        fetch('/react', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `post_id=${postId}&type=${type}`
+        })
+            .then(response => {
+                if (response.ok) {
+                    location.reload(); // Recharge la page pour mettre à jour les compteurs
+                }
+            })
+            .catch(error => console.error('Erreur:', error));
+    }
+
+    // Charger les commentaires au chargement de la page (seulement si connecté)
+    document.addEventListener('DOMContentLoaded', function() {
+        {{ if .Username }}
+        loadComments();
+        {{ end }}
+    });
+</script>
 </body>
 </html>

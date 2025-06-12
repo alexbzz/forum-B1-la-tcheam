@@ -21,7 +21,7 @@ func GoogleLogin(w http.ResponseWriter, r *http.Request) {
 	var googleOAuthConfig = &oauth2.Config{
 		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
-		RedirectURL:  "http://localhost:8080/auth/google/callback",
+		RedirectURL:  "http://localhost:8081/auth/google/callback",
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
 		Endpoint:     google.Endpoint,
 	}
@@ -38,7 +38,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 	var googleOAuthConfig = &oauth2.Config{
 		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
-		RedirectURL:  "http://localhost:8080/auth/google/callback",
+		RedirectURL:  "http://localhost:8081/auth/google/callback",
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
 		Endpoint:     google.Endpoint,
 	}
@@ -66,7 +66,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Connexion DB
-	db, err := sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/forum")
+	db, err := sql.Open("mysql", "root:123456789@tcp(127.0.0.1:3306)/forum")
 	if err != nil {
 		http.Error(w, "Erreur connexion DB: "+err.Error(), http.StatusInternalServerError)
 		return
@@ -94,7 +94,7 @@ func GithubLogin(w http.ResponseWriter, r *http.Request) {
 	var githubOAuthConfig = &oauth2.Config{
 		ClientID:     os.Getenv("GITHUB_CLIENT_ID"),
 		ClientSecret: os.Getenv("GITHUB_CLIENT_SECRET"),
-		RedirectURL:  "http://localhost:8080/auth/github/callback",
+		RedirectURL:  "http://localhost:8081/auth/github/callback",
 		Scopes:       []string{"user:email", "user:info"},
 		Endpoint:     github.Endpoint,
 	}
@@ -112,7 +112,7 @@ func GithubCallback(w http.ResponseWriter, r *http.Request) {
 	var githubOAuthConfig = &oauth2.Config{
 		ClientID:     os.Getenv("GITHUB_CLIENT_ID"),
 		ClientSecret: os.Getenv("GITHUB_CLIENT_SECRET"),
-		RedirectURL:  "http://localhost:8080/auth/github/callback",
+		RedirectURL:  "http://localhost:8081/auth/github/callback",
 		Scopes:       []string{"user:email", "user:info"},
 		Endpoint:     github.Endpoint,
 	}
@@ -174,7 +174,7 @@ func GithubCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db, err := sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/forum")
+	db, err := sql.Open("mysql", "root:123456789@tcp(127.0.0.1:3306)/forum")
 	if err != nil {
 		http.Error(w, "Erreur connexion DB: "+err.Error(), http.StatusInternalServerError)
 		return

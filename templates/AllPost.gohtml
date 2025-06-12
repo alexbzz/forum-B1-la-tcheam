@@ -6,56 +6,183 @@
     <link rel="stylesheet" href="/static/css/allpost.css">
 </head>
 <body>
-    <header>
-        <h1>Forum La Tcheam</h1>
-        <nav>
-            <ul>
-                <li><a href="/">Accueil</a></li>
-                <li><a href="/AllPost">Forum</a></li>
-                <li><a href="/create-post">Créer un post</a></li>
-                <li><a href="/login">Connexion</a></li>
-                <li><a href="/registe">Inscription</a></li>
-                <li><a href="/logout">Déconnexion</a></li>
-            </ul>
-        </nav>
-        <div class="user-info">
-            {{ if .Username }}
-                <span>Bonjour, {{ .Username }}</span>
-            {{ end }}
-        </div>
-    </header>
+<header>
+    <h1>Forum La Tcheam</h1>
+    <nav>
+        <ul>
+            <li><a href="/">Accueil</a></li>
+            <li><a href="/AllPost">Forum</a></li>
+            <li><a href="/create-post">Créer un post</a></li>
+            <li><a href="/login">Connexion</a></li>
+            <li><a href="/registe">Inscription</a></li>
+            <li><a href="/logout">Déconnexion</a></li>
+        </ul>
+    </nav>
+    <div class="user-info">
+        {{ if .Username }}
+            <span>Bonjour, {{ .Username }}</span>
+        {{ end }}
+    </div>
+</header>
 
-    <main>
-        <section class="posts-list">
-            <h2>Tous les posts</h2>
-            {{ if .Posts }}
-                {{ range .Posts }}
+<main>
+    <section class="filters">
+        <h2>Filtres</h2>
+        <form method="get" action="/AllPost">
+            <label for="category">Catégorie :</label>
+            <select name="category_id" id="category">
+                <option value="">-- Toutes --</option>
+                {{ range .Categories }}
+                    <option value="{{.ID}}" {{if eq (printf "%d" .ID) $.SelectedCategoryID}}selected{{end}}>{{.Name}}</option>
+                {{ end }}
+            </select>
+
+            <label for="filter">Afficher :</label>
+            <select name="filter" id="filter">
+                <option value="">-- Tous les posts --</option>
+                {{ if .Username }}
+                    <option value="mine" {{if eq $.SelectedFilter "mine"}}selected{{end}}>Mes posts</option>
+                    <option value="liked" {{if eq $.SelectedFilter "liked"}}selected{{end}}>Posts que j'ai liké</option>
+                {{ end }}
+            </select>
+
+            <button type="submit">Appliquer</button>
+        </form>
+    </section>
+
+    <section class="posts-list">
+        <h2>Résultats</h2>
+        {{ if .Posts }}
+            {{ range .Posts }}
                 <article class="post-card">
                     <h3 class="post-title"><a href="/post/{{ .ID }}">{{ .Title }}</a></h3>
                     <div class="post-meta">
                         <span class="post-author">Par: {{ .Author }}</span>
-                        <span class="post-date">Le: {{ .CreatedAt }}</span>
+                        <span class="post-date">Le: {{ .CreatedAtStr }}</span>
                     </div>
                     <div class="post-excerpt">
                         {{ .Content }}
                     </div>
-                    <a href="/post?id={{ .ID }}" class="read-more">Lire la suite</a>                </article>
-                {{ end }}
-            {{ else }}
-                <div class="no-posts-message">
-                    <p>Aucun post n'a été créé pour le moment.</p>
-                    {{ if .Username }}
-                        <p>Soyez le premier à <a href="/create-post">créer un post</a> !</p>
-                    {{ else }}
-                        <p><a href="/login">Connectez-vous</a> pour créer un post.</p>
-                    {{ end }}
-                </div>
-            {{ end }}
-        </section>
-    </main>
+                    <div class="post-actions">
+                        <a href="/post?id={{ .ID }}" class="read-more">Lire la suite</a>
+                        <button class="comments-toggle" onclick="toggleComments({{ .ID }})">Voir les commentaires</button>
 
-    <footer>
-        <p>&copy; 2025 La Tcheam. Tous droits réservés.</p>
-    </footer>
+                        {{ if $.Username }}
+                            <div class="reactions">
+                                <form method="post" action="/AllPost">
+                                    <input type="hidden" name="post_id" value="{{.ID}}">
+                                    <button type="submit" name="action" value="like" {{if eq .UserReaction "like"}}class="active"{{end}}>
+                                        👍 Like ({{.Likes}})
+                                    </button>
+                                    <button type="submit" name="action" value="dislike" {{if eq .UserReaction "dislike"}}class="active"{{end}}>
+                                        👎 Dislike ({{.Dislikes}})
+                                    </button>
+                                    {{if .UserReaction}}
+                                        <button type="submit" name="action" value="remove">
+                                            ❌ Annuler
+                                        </button>
+                                    {{end}}
+                                </form>
+                            </div>
+                        {{ else }}
+                            <div class="reactions-display">
+                                <span>👍 {{.Likes}} | 👎 {{.Dislikes}}</span>
+                            </div>
+                        {{ end }}
+                    </div>
+
+                    <!-- Section des commentaires -->
+                    <div class="comments-section" id="comments-{{ .ID }}">
+                        <div class="comments-loading">
+                            <p>Chargement des commentaires...</p>
+                        </div>
+                        <div class="comments-list" id="comments-list-{{ .ID }}">
+                            <!-- Les commentaires seront chargés ici via JavaScript -->
+                        </div>
+
+                        {{ if $.Username }}
+                            <div class="comment-form" >
+                                <form action="/add-comment" method="post">
+                                    <input type="hidden" name="post_id" value="{{ .ID }}">
+                                    <textarea name="content" placeholder="Écrivez votre commentaire..." required></textarea>
+                                    <button type="submit">Publier le commentaire</button>
+                                </form>
+                            </div>
+                        {{ else }}
+                            <div class="comment-form">
+                                <p><a href="/login">Connectez-vous</a> pour commenter.</p>
+                            </div>
+                        {{ end }}
+                    </div>
+                </article>
+            {{ end }}
+        {{ else }}
+            <div class="no-posts-message">
+                <p>Aucun post trouvé avec ces filtres.</p>
+                {{ if .Username }}
+                    <p><a href="/create-post">Créer un nouveau post</a> ou <a href="/AllPost">réinitialiser les filtres</a>.</p>
+                {{ else }}
+                    <p><a href="/login">Connectez-vous</a> pour créer un post.</p>
+                {{ end }}
+            </div>
+        {{ end }}
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2025 La Tcheam. Tous droits réservés.</p>
+</footer>
+
+<script>
+    // Fonction pour basculer l'affichage des commentaires
+    function toggleComments(postId) {
+        const commentsSection = document.getElementById(`comments-${postId}`);
+        const commentsLoading = commentsSection.querySelector('.comments-loading');
+        const commentsList = document.getElementById(`comments-list-${postId}`);
+
+        if (commentsSection.style.display === 'none' || commentsSection.style.display === '') {
+            commentsSection.style.display = 'block';
+
+            // Charger les commentaires si pas encore fait
+            if (commentsList.innerHTML === '') {
+                loadComments(postId);
+            }
+        } else {
+            commentsSection.style.display = 'none';
+        }
+    }
+
+    // Fonction pour charger les commentaires via AJAX
+    function loadComments(postId) {
+        const commentsList = document.getElementById(`comments-list-${postId}`);
+        const commentsLoading = document.querySelector(`#comments-${postId} .comments-loading`);
+
+        fetch(`/get-comments?post_id=${postId}`)
+            .then(response => response.json())
+            .then(comments => {
+                commentsLoading.style.display = 'none';
+
+                if (comments && comments.length > 0) {
+                    commentsList.innerHTML = comments.map(comment => `
+                    <div class="comment">
+                        <div class="comment-meta">
+                            <strong>${comment.author}</strong> - ${comment.created_at}
+                        </div>
+                        <div class="comment-content">
+                            ${comment.content}
+                        </div>
+                    </div>
+                `).join('');
+                } else {
+                    commentsList.innerHTML = '<div class="no-comments">Aucun commentaire pour l\'instant.</div>';
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement des commentaires:', error);
+                commentsLoading.innerHTML = '<p>Erreur lors du chargement des commentaires.</p>';
+            });
+    }
+</script>
+
 </body>
 </html>

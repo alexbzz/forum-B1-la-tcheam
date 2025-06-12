@@ -18,7 +18,7 @@ func InitDB(database *sql.DB) {
 
 func ServeRegisterPage(w http.ResponseWriter, r *http.Request) {
 
-	templatePath := filepath.Join("./forum-B1-la-tcheam/templates/register.html")
+	templatePath := filepath.Join("./templates/register.html")
 
 	tmpl, err := template.ParseFiles(templatePath)
 	if err != nil {
