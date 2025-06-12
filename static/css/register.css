@@ -1,82 +1,174 @@
-/* static/css/register.css */
-
-body {
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
+/* Reset de base */
+* {
     margin: 0;
-    padding-top: 40px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Corps de page */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(120deg, #1f1c2c, #928dab);
+    color: #fff;
+    min-height: 100vh;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 
+/* Conteneur du formulaire */
 form {
-    background-color: white;
-    padding: 30px 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    width: 320px;
-    box-sizing: border-box;
-    margin-bottom: 10px; /* petit espace en dessous du formulaire */
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 40px 50px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    transition: opacity 1s ease;
 }
 
-div {
-    margin-bottom: 15px;
+/* Titre */
+h1 {
+    font-size: 32px;
+    margin-bottom: 25px;
+    color: #ffffff;
+}
+
+/* Champs du formulaire */
+form div {
+    margin-bottom: 20px;
+    text-align: left;
 }
 
 label {
     display: block;
     margin-bottom: 6px;
     font-weight: bold;
-    color: #555;
+    color: #ccc;
+    transition: color 0.3s ease;
 }
 
 input[type="text"],
 input[type="email"],
 input[type="password"] {
     width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 15px;
-    box-sizing: border-box;
-    transition: border-color 0.3s;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
-    border-color: #007BFF;
-    outline: none;
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #007BFF;
-    color: white;
+    padding: 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
+    background-color: #f0f0f0;
+    color: #000;
     font-size: 16px;
+}
+
+/* Bouton de soumission avec effet moderne */
+button[type="submit"] {
+    position: relative;
+    display: inline-block;
+    padding: 12px 20px;
+    width: 100%;
+    color: #fff;
+    background: linear-gradient(45deg, #6a00ff, #8e2de2);
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    overflow: hidden;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    transition: background 0.3s ease;
+    box-shadow: 0 4px 15px rgba(142, 45, 226, 0.6);
 }
 
-button:hover {
-    background-color: #0056b3;
+button[type="submit"]::before,
+button[type="submit"]::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(60deg,
+            rgba(255, 255, 255, 0.2) 0%,
+            rgba(255, 255, 255, 0) 60%);
+    transform: rotate(25deg);
+    transition: transform 0.5s ease;
+    pointer-events: none;
+    border-radius: 8px;
 }
 
+button[type="submit"]::after {
+    top: auto;
+    bottom: -50%;
+    left: -50%;
+    transform: rotate(-25deg);
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(45deg, #8e2de2, #6a00ff);
+    box-shadow: 0 6px 20px rgba(106, 0, 255, 0.9);
+}
+
+button[type="submit"]:hover::before {
+    transform: rotate(25deg) translateX(20%);
+}
+
+button[type="submit"]:hover::after {
+    transform: rotate(-25deg) translateX(-20%);
+}
+
+/* Lien vers la connexion */
 p {
-    color: #666;
+    text-align: center;
+    margin-top: 20px;
     font-size: 14px;
 }
 
-p a {
-    color: #007BFF;
+a {
+    color: #00ffff;
     text-decoration: none;
-    font-weight: bold;
 }
 
-p a:hover {
+a:hover {
+    text-decoration: underline;
+}
+
+/* Bouton GitHub */
+.github-btn-img {
+    height: 40px;
+    width: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.github-btn-img:hover {
+    transform: scale(1.1);
+}
+
+
+.form-container {
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    margin: center;
+}
+
+.form-container h1 {
+    margin-bottom: 25px;
+    font-size: 32px;
+    color: #ffffff;
+}
+
+.login-link {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #ccc;
+}
+
+.login-link a {
+    color: #00ffff;
+    text-decoration: none;
+}
+
+.login-link a:hover {
     text-decoration: underline;
 }
