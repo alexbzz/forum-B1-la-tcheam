@@ -1,0 +1,369 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(120deg, #1f1c2c, #928dab);
+    color: #fff;
+    min-height: 100vh;
+}
+
+header {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+header h1 {
+    margin: 0 0 15px 0;
+    font-size: 28px;
+    text-align: center;
+    background: linear-gradient(45deg, #00ffff, #8e2de2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+nav ul li a {
+    color: #ccc;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+nav ul li a:hover {
+    color: #00ffff;
+    background-color: rgba(0, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.user-info {
+    text-align: center;
+    margin-top: 10px;
+    color: #00ffff;
+    font-weight: bold;
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.error-message {
+    background-color: rgba(255, 71, 87, 0.1);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    color: #ff6b7a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.error-message p {
+    margin: 0;
+    font-weight: 600;
+}
+
+.post-form {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 40px 50px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #ccc;
+    transition: color 0.3s ease;
+    font-size: 16px;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: rgba(240, 240, 240, 0.9);
+    color: #000;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    box-sizing: border-box;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #00ffff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+.form-group input[type="text"]:focus + label,
+.form-group textarea:focus + label,
+.form-group.active label {
+    color: #00ffff;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.5;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #666;
+    opacity: 0.8;
+}
+
+/* Submit button with glitch effect inspired style */
+.btn {
+    position: relative;
+    display: inline-block;
+    padding: 12px 30px;
+    width: 100%;
+    color: #fff;
+    background: linear-gradient(45deg, #6a00ff, #8e2de2);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    overflow: hidden;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    transition: background 0.3s ease;
+    box-shadow: 0 4px 15px rgba(142, 45, 226, 0.6);
+    font-size: 16px;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.btn::before,
+.btn::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(60deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 60%);
+    transform: rotate(25deg);
+    transition: transform 0.5s ease;
+    pointer-events: none;
+    border-radius: 8px;
+}
+
+.btn::after {
+    top: auto;
+    bottom: -50%;
+    left: -50%;
+    transform: rotate(-25deg);
+}
+
+.btn:hover {
+    background: linear-gradient(45deg, #8e2de2, #6a00ff);
+    box-shadow: 0 6px 20px rgba(106, 0, 255, 0.9);
+    transform: translateY(-2px);
+}
+
+.btn:hover::before {
+    transform: rotate(25deg) translateX(20%);
+}
+
+.btn:hover::after {
+    transform: rotate(-25deg) translateX(-20%);
+}
+
+.message {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.message a {
+    color: #00ffff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.message a:hover {
+    color: #8e2de2;
+    text-decoration: underline;
+}
+
+footer {
+    background-color: rgba(255, 255, 255, 0.05);
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+footer p {
+    margin: 0;
+    color: #ccc;
+}
+
+/* Animation for form elements */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.post-form {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.message {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.error-message {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    main {
+        padding: 20px 10px;
+    }
+
+    .post-form {
+        padding: 30px 25px;
+        margin: 0 10px;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-group input[type="text"],
+    .form-group textarea {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .form-group label {
+        font-size: 14px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .message {
+        padding: 30px 20px;
+        margin: 0 10px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .post-form {
+        padding: 25px 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group textarea {
+        min-height: 100px;
+    }
+
+    nav ul li a {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    .message {
+        padding: 25px 15px;
+        font-size: 14px;
+    }
+}
+
+/* Focus and active states for better UX */
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    transform: translateY(-2px);
+}
+
+/* Loading state for button */
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(142, 45, 226, 0.4);
+}
+
+/* Custom scrollbar for textarea */
+.form-group textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+.form-group textarea::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.form-group textarea::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #6a00ff, #8e2de2);
+    border-radius: 4px;
+}
+
+.form-group textarea::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #8e2de2, #6a00ff);
+}
