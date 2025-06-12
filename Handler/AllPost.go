@@ -66,14 +66,6 @@ func ServeAllPostPage(w http.ResponseWriter, r *http.Request) {
 	data.Posts = posts
 	data.SelectedFilter = r.URL.Query().Get("filter")
 
-	// Récupérer les catégories
-	categories, err := getCategories()
-	if err != nil {
-		fmt.Printf("Erreur lors de la récupération des catégories: %v\n", err)
-		// Ne pas faire d'erreur fatale pour les catégories
-	}
-	data.Categories = categories
-
 	// Charger et exécuter le template
 	tmplPath := filepath.Join("templates", "AllPost.gohtml")
 	tmpl, err := template.ParseFiles(tmplPath)
@@ -332,37 +324,6 @@ func processPost(post PostView, createdAt []byte, username string) (PostView, er
 	}
 
 	return post, nil
-}
-
-// Fonction pour récupérer les catégories
-func getCategories() ([]Category, error) {
-	if db == nil {
-		return nil, fmt.Errorf("connexion à la base de données non initialisée")
-	}
-
-	query := "SELECT id, name FROM categories ORDER BY name"
-	rows, err := db.Query(query)
-	if err != nil {
-		return nil, fmt.Errorf("erreur lors de la récupération des catégories: %v", err)
-	}
-	defer rows.Close()
-
-	var categories []Category
-	for rows.Next() {
-		var category Category
-		err := rows.Scan(&category.ID, &category.Name)
-		if err != nil {
-			fmt.Printf("Erreur lors du scan d'une catégorie: %v\n", err)
-			continue
-		}
-		categories = append(categories, category)
-	}
-
-	if err = rows.Err(); err != nil {
-		return nil, fmt.Errorf("erreur lors du parcours des catégories: %v", err)
-	}
-
-	return categories, nil
 }
 
 // Fonction pour gérer les réactions (like/dislike)

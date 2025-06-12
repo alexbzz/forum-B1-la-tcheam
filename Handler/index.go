@@ -1,7 +1,6 @@
 package Handler
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 	"path/filepath"
@@ -13,7 +12,7 @@ type IndexPageData struct {
 
 func ServeIndexPage(w http.ResponseWriter, r *http.Request) {
 	templatePath := filepath.Join("./templates/index.gohtml")
-	fmt.Println("Tentative de charger le template:", templatePath)
+
 	username := "Utilisateur"
 
 	cookie, err := r.Cookie("username")

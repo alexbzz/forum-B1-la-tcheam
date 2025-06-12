@@ -39,8 +39,8 @@ func main() {
 			Handler.ServeLoginPage(w, r)
 		}
 	})
-
-	http.HandleFunc("/postDetail", Handler.ServePostDetailPage)
+	http.HandleFunc("/post/", Handler.ServePostDetail)
+	http.HandleFunc("/post-detail", Handler.ServePostDetailPage)
 	http.HandleFunc("/AllPost", Handler.ServeAllPostPage)
 	http.HandleFunc("/add-comment", Handler.AddComment)
 	http.HandleFunc("/posts", Handler.ServePostPage)

@@ -55,7 +55,7 @@
         {{ if .Posts }}
             {{ range .Posts }}
                 <article class="post-card">
-                    <h3 class="post-title"><a href="/post/{{ .ID }}">{{ .Title }}</a></h3>
+                    <h3 class="post-title"><a href="/post?id={{ .ID }}">{{ .Title }}</a></h3>
                     <div class="post-meta">
                         <span class="post-author">Par: {{ .Author }}</span>
                         <span class="post-date">Le: {{ .CreatedAtStr }}</span>

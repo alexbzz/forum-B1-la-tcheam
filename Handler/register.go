@@ -10,8 +10,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var db *sql.DB
-
 func InitDB(database *sql.DB) {
 	db = database
 }
